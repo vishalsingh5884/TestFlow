@@ -7,3 +7,17 @@
 # Local application data
 backend/data/
 backend/*.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.class
+
+# Local editor files
+.vscode/
+.idea/
+
+# Project archives and backup files
+*.zip
+*.backup
+*.before-create-test
