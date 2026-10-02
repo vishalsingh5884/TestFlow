@@ -1,11 +1,10 @@
-import express from "express";
+﻿import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 import nodemailer from "nodemailer";
 import { GoogleGenAI } from "@google/genai";
 import { registerCommunityRoutes } from "./communityFeature.js";
@@ -19,8 +18,7 @@ PATH CONFIGURATION
 ====================================================
 */
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = process.env.NETLIFY ? process.cwd() : path.dirname(new URL(".", import.meta.url).pathname);
 
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
@@ -162,7 +160,7 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    console.warn(`âš ï¸ CORS blocked origin: ${origin}`);
+    console.warn(`Ã¢Å¡Â Ã¯Â¸Â CORS blocked origin: ${origin}`);
     return callback(null, false);
   },
   credentials: true,
@@ -263,7 +261,7 @@ async function generateGeminiContent(
   ) {
     try {
       console.log(
-        `ðŸ¤– Gemini request attempt ${
+        `Ã°Å¸Â¤â€“ Gemini request attempt ${
           attempt + 1
         }/${GEMINI_MAX_RETRIES + 1}`,
       );
@@ -275,14 +273,14 @@ async function generateGeminiContent(
           config,
         });
 
-      console.log("âœ… Gemini response received.");
+      console.log("Ã¢Å“â€¦ Gemini response received.");
 
       return response;
     } catch (error) {
       lastError = error;
 
       console.error(
-        `âŒ Gemini attempt ${
+        `Ã¢ÂÅ’ Gemini attempt ${
           attempt + 1
         } failed:`,
         error?.message || error,
@@ -303,7 +301,7 @@ async function generateGeminiContent(
         ];
 
       console.log(
-        `â³ Gemini temporarily unavailable. Retrying in ${
+        `Ã¢ÂÂ³ Gemini temporarily unavailable. Retrying in ${
           delay / 1000
         } seconds...`,
       );
@@ -500,12 +498,12 @@ async function initializeAdminAccounts() {
 
     saveAdminAccountsToDisk().catch((error) => console.error("Failed to persist admin accounts:", error));
 
-    console.log(`ðŸ‘® Loaded ${adminAccounts.size} admin account(s) from ${ADMIN_ACCOUNTS_FILE}`);
+    console.log(`Ã°Å¸â€˜Â® Loaded ${adminAccounts.size} admin account(s) from ${ADMIN_ACCOUNTS_FILE}`);
     console.log(
-      `ðŸ“§ Admin emails: ${[...adminAccounts.values()].map((admin) => admin.email).join(", ")}`,
+      `Ã°Å¸â€œÂ§ Admin emails: ${[...adminAccounts.values()].map((admin) => admin.email).join(", ")}`,
     );
   } catch (error) {
-    console.error("âŒ Failed to initialize admin accounts:", error);
+    console.error("Ã¢ÂÅ’ Failed to initialize admin accounts:", error);
 
     const passwordHash = await bcrypt.hash(
       String(process.env.ADMIN_PASSWORD || "Admin@123"),
@@ -727,9 +725,9 @@ async function saveTestsToDisk() {
 
     await writeBlobJSON("tests", serializedTests);
 
-    console.log("💾 Tests saved to Netlify Blobs.");
+    console.log("ðŸ’¾ Tests saved to Netlify Blobs.");
   } catch (error) {
-    console.error("❌ Failed to save tests to Netlify Blobs:", error);
+    console.error("âŒ Failed to save tests to Netlify Blobs:", error);
     throw error;
   }
 }
@@ -746,7 +744,7 @@ async function loadTestsFromDisk() {
         typeof test !== "object" ||
         Array.isArray(test)
       ) {
-        console.warn(`⚠️ Skipping invalid test record: ${paperId}`);
+        console.warn(`âš ï¸ Skipping invalid test record: ${paperId}`);
         continue;
       }
 
@@ -757,9 +755,9 @@ async function loadTestsFromDisk() {
       tests.set(paperId, test);
     }
 
-    console.log(`📚 Loaded ${tests.size} test(s) from Netlify Blobs.`);
+    console.log(`ðŸ“š Loaded ${tests.size} test(s) from Netlify Blobs.`);
   } catch (error) {
-    console.error("❌ Failed to load tests from Netlify Blobs:", error);
+    console.error("âŒ Failed to load tests from Netlify Blobs:", error);
     tests.clear();
   }
 }
@@ -788,7 +786,7 @@ function saveExamAttemptsToDisk() {
     );
   } catch (error) {
     console.error(
-      "âŒ Failed to save exam attempts:",
+      "Ã¢ÂÅ’ Failed to save exam attempts:",
       error,
     );
   }
@@ -808,7 +806,7 @@ function loadExamAttemptsFromDisk() {
       );
 
       console.log(
-        "ðŸ“ Created exam-attempts.json",
+        "Ã°Å¸â€œÂ Created exam-attempts.json",
       );
 
       return;
@@ -839,7 +837,7 @@ function loadExamAttemptsFromDisk() {
         typeof attempt !== "object" ||
         Array.isArray(attempt)
       ) {
-        console.warn(`âš ï¸ Skipping invalid exam attempt record: ${attemptId}`);
+        console.warn(`Ã¢Å¡Â Ã¯Â¸Â Skipping invalid exam attempt record: ${attemptId}`);
         continue;
       }
 
@@ -854,11 +852,11 @@ function loadExamAttemptsFromDisk() {
     }
 
     console.log(
-      `ðŸ“ Loaded ${examAttempts.size} exam attempt(s) from persistent storage.`,
+      `Ã°Å¸â€œÂ Loaded ${examAttempts.size} exam attempt(s) from persistent storage.`,
     );
   } catch (error) {
     console.error(
-      "âŒ Failed to load exam-attempts.json:",
+      "Ã¢ÂÅ’ Failed to load exam-attempts.json:",
       error,
     );
   }
@@ -1171,11 +1169,11 @@ function initializeMailTransporter() {
     !SMTP_PASS
   ) {
     console.log(
-      "ðŸ“§ SMTP not configured.",
+      "Ã°Å¸â€œÂ§ SMTP not configured.",
     );
 
     console.log(
-      "ðŸ§ª Password reset will run in development mode.",
+      "Ã°Å¸Â§Âª Password reset will run in development mode.",
     );
 
     return;
@@ -1205,17 +1203,17 @@ function initializeMailTransporter() {
       });
 
     console.log(
-      "ðŸ“§ SMTP email service configured.",
+      "Ã°Å¸â€œÂ§ SMTP email service configured.",
     );
 
     if (SMTP_FROM) {
       console.log(
-        `ðŸ“¨ Password reset sender: ${SMTP_FROM}`,
+        `Ã°Å¸â€œÂ¨ Password reset sender: ${SMTP_FROM}`,
       );
     }
   } catch (error) {
     console.error(
-      "âŒ Failed to initialize email transporter:",
+      "Ã¢ÂÅ’ Failed to initialize email transporter:",
       error,
     );
 
@@ -1275,13 +1273,13 @@ async function sendPasswordResetEmail(
   if (!mailTransporter) {
     console.log("");
     console.log(
-      "ðŸ§ª DEVELOPMENT PASSWORD RESET",
+      "Ã°Å¸Â§Âª DEVELOPMENT PASSWORD RESET",
     );
     console.log(
-      `ðŸ‘¤ Student: ${user.email}`,
+      `Ã°Å¸â€˜Â¤ Student: ${user.email}`,
     );
     console.log(
-      `ðŸ”— Reset URL: ${resetUrl}`,
+      `Ã°Å¸â€â€” Reset URL: ${resetUrl}`,
     );
     console.log("");
 
@@ -1424,7 +1422,7 @@ Online Class Test AI
   });
 
   console.log(
-    `ðŸ“¨ Password reset email sent to ${user.email}`,
+    `Ã°Å¸â€œÂ¨ Password reset email sent to ${user.email}`,
   );
 
   return {
@@ -2373,7 +2371,7 @@ app.post(
           );
       } catch (emailError) {
         console.error(
-          "âŒ Password reset email failed:",
+          "Ã¢ÂÅ’ Password reset email failed:",
           emailError,
         );
 
@@ -2430,7 +2428,7 @@ app.post(
       }
 
       console.log(
-        `ðŸ” Password reset requested for ${user.email}`,
+        `Ã°Å¸â€Â Password reset requested for ${user.email}`,
       );
 
       res.json(
@@ -2615,7 +2613,7 @@ app.post(
       }
 
       console.log(
-        `ðŸ”‘ Password successfully reset for ${user.email}`,
+        `Ã°Å¸â€â€˜ Password successfully reset for ${user.email}`,
       );
 
       res.json({
@@ -3031,7 +3029,7 @@ For Coding questions:
 `;
 
       console.log(
-        `ðŸ¤– Generating test ${paperId} with Gemini...`,
+        `Ã°Å¸Â¤â€“ Generating test ${paperId} with Gemini...`,
       );
 
       const response =
@@ -3218,7 +3216,7 @@ For Coding questions:
       await saveTestsToDisk();
 
       console.log(
-        `âœ… Test ${paperId} generated successfully`,
+        `Ã¢Å“â€¦ Test ${paperId} generated successfully`,
       );
 
       res.json({
@@ -3804,7 +3802,7 @@ app.post(
     });
 
     console.log(
-      `ðŸ“¢ Test ${paperId} published`,
+      `Ã°Å¸â€œÂ¢ Test ${paperId} published`,
     );
 
     res.json({
@@ -3830,15 +3828,15 @@ app.get(
   (req, res) => {
     const paperId = normalizePaperId(req.params.paperId);
 
-    console.log(`ðŸŽ“ Student requested Paper ID: ${paperId}`);
+    console.log(`Ã°Å¸Å½â€œ Student requested Paper ID: ${paperId}`);
     console.log(
-      `ðŸ“‘ Available tests: ${[...tests.keys()].join(", ")}`
+      `Ã°Å¸â€œâ€˜ Available tests: ${[...tests.keys()].join(", ")}`
     );
 
     const test = tests.get(paperId);
 
     if (!test) {
-      console.warn(`âŒ Paper ID ${paperId} was not found.`);
+      console.warn(`Ã¢ÂÅ’ Paper ID ${paperId} was not found.`);
       return res.status(404).json({
         success: false,
         message: "Invalid Paper ID.",
@@ -3872,7 +3870,7 @@ app.get(
 
     const studentTest = createStudentSafeTest(test);
 
-    console.log(`âœ… Student test ${paperId} returned successfully.`);
+    console.log(`Ã¢Å“â€¦ Student test ${paperId} returned successfully.`);
 
     res.json({
       success: true,
@@ -4237,7 +4235,7 @@ app.post(
       await saveExamAttemptsToDisk();
 
       console.log(
-        `ðŸ“ Exam started | Student: ${req.user.name} | Paper: ${paperId} | Attempt: ${attemptId}`,
+        `Ã°Å¸â€œÂ Exam started | Student: ${req.user.name} | Paper: ${paperId} | Attempt: ${attemptId}`,
       );
 
       res.status(201).json({
@@ -4443,35 +4441,35 @@ app.post(
       );
 
       console.warn(
-        "ðŸš¨ EXAMINATION RULE VIOLATION",
+        "Ã°Å¸Å¡Â¨ EXAMINATION RULE VIOLATION",
       );
 
       console.warn(
-        `ðŸš¨ Student: ${req.user.name}`,
+        `Ã°Å¸Å¡Â¨ Student: ${req.user.name}`,
       );
 
       console.warn(
-        `ðŸš¨ Email: ${req.user.email}`,
+        `Ã°Å¸Å¡Â¨ Email: ${req.user.email}`,
       );
 
       console.warn(
-        `ðŸš¨ Paper ID: ${paperId}`,
+        `Ã°Å¸Å¡Â¨ Paper ID: ${paperId}`,
       );
 
       console.warn(
-        `ðŸš¨ Attempt ID: ${attemptId}`,
+        `Ã°Å¸Å¡Â¨ Attempt ID: ${attemptId}`,
       );
 
       console.warn(
-        `ðŸš¨ Violation: ${finalViolationType}`,
+        `Ã°Å¸Å¡Â¨ Violation: ${finalViolationType}`,
       );
 
       console.warn(
-        `ðŸš¨ Time: ${timestamp}`,
+        `Ã°Å¸Å¡Â¨ Time: ${timestamp}`,
       );
 
       console.warn(
-        "ðŸš¨ Exam TERMINATED and FLAGGED.",
+        "Ã°Å¸Å¡Â¨ Exam TERMINATED and FLAGGED.",
       );
 
       res.json({
@@ -4830,7 +4828,7 @@ app.post(
       });
 
       console.log(
-        `âœ… Exam submitted | Student: ${req.user.name} | Paper: ${paperId} | Score: ${score}`,
+        `Ã¢Å“â€¦ Exam submitted | Student: ${req.user.name} | Paper: ${paperId} | Score: ${score}`,
       );
 
       res.json({
@@ -5672,10 +5670,10 @@ app.post("/api/admin/admins", async (req, res) => {
     saveAdminAccountsToDisk().catch((error) => console.error("Failed to persist admin accounts:", error));
 
     console.log(
-      `ðŸ‘¤ Created admin account: ${admin.name} <${admin.email}> (${admin.id})`,
+      `Ã°Å¸â€˜Â¤ Created admin account: ${admin.name} <${admin.email}> (${admin.id})`,
     );
     console.log(
-      `ðŸ‘® Admin accounts currently loaded: ${adminAccounts.size}`,
+      `Ã°Å¸â€˜Â® Admin accounts currently loaded: ${adminAccounts.size}`,
     );
 
     return res.status(201).json({
@@ -5961,7 +5959,7 @@ app.use((req, res) => {
 
 app.use((error, req, res, next) => {
   console.error(
-    `âŒ Unhandled server error | ${req.method} ${req.originalUrl}:`,
+    `Ã¢ÂÅ’ Unhandled server error | ${req.method} ${req.originalUrl}:`,
     error,
   );
 
@@ -6018,23 +6016,23 @@ async function startServer(startHttpServer = true) {
       );
 
       console.log(
-        "ðŸš€ Online Class Test AI Backend",
+        "Ã°Å¸Å¡â‚¬ Online Class Test AI Backend",
       );
 
       console.log(
-        `ðŸ“¡ Server: http://${HOST}:${PORT}`,
+        `Ã°Å¸â€œÂ¡ Server: http://${HOST}:${PORT}`,
       );
 
       console.log(
-        `ðŸŒ Frontend origin: ${configuredFrontendOrigin || "not set"}`,
+        `Ã°Å¸Å’Â Frontend origin: ${configuredFrontendOrigin || "not set"}`,
       );
 
       console.log(
-        `ðŸ“ Data directory: ${DATA_DIR}`,
+        `Ã°Å¸â€œÂ Data directory: ${DATA_DIR}`,
       );
 
       console.log(
-        `ðŸ¤– Gemini AI: ${
+        `Ã°Å¸Â¤â€“ Gemini AI: ${
           process.env.GEMINI_API_KEY
             ? "Configured"
             : "Not Configured"
@@ -6042,67 +6040,67 @@ async function startServer(startHttpServer = true) {
       );
 
       console.log(
-        `ðŸ§  Gemini Model: ${GEMINI_MODEL}`,
+        `Ã°Å¸Â§Â  Gemini Model: ${GEMINI_MODEL}`,
       );
 
       console.log(
-        "ðŸ” Student authentication: ENABLED",
+        "Ã°Å¸â€Â Student authentication: ENABLED",
       );
 
       console.log(
-        "ðŸ›¡ï¸ Student answer protection: ENABLED",
+        "Ã°Å¸â€ºÂ¡Ã¯Â¸Â Student answer protection: ENABLED",
       );
 
       console.log(
-        "ðŸ”„ Gemini retry protection: ENABLED",
+        "Ã°Å¸â€â€ž Gemini retry protection: ENABLED",
       );
 
       console.log(
-        "âœï¸ Admin test editing: ENABLED",
+        "Ã¢Å“ÂÃ¯Â¸Â Admin test editing: ENABLED",
       );
 
       console.log(
-        "ðŸ’¾ Draft saving: ENABLED",
+        "Ã°Å¸â€™Â¾ Draft saving: ENABLED",
       );
 
       console.log(
-        "ðŸ’¿ Persistent JSON storage: ENABLED",
+        "Ã°Å¸â€™Â¿ Persistent JSON storage: ENABLED",
       );
 
       console.log(
-        `ðŸ‘¥ Student database: ${STUDENTS_FILE}`,
+        `Ã°Å¸â€˜Â¥ Student database: ${STUDENTS_FILE}`,
       );
 
       console.log(
-        `ðŸ“ Test database: ${TESTS_FILE}`,
+        `Ã°Å¸â€œÂ Test database: ${TESTS_FILE}`,
       );
 
       console.log(
-        "ðŸ–¥ï¸ Fullscreen exam enforcement: ENABLED",
+        "Ã°Å¸â€“Â¥Ã¯Â¸Â Fullscreen exam enforcement: ENABLED",
       );
 
       console.log(
-        "ðŸš¨ Exam violation detection: ENABLED",
+        "Ã°Å¸Å¡Â¨ Exam violation detection: ENABLED",
       );
 
       console.log(
-        "ðŸ”” Admin violation notifications: ENABLED",
+        "Ã°Å¸â€â€ Admin violation notifications: ENABLED",
       );
 
       console.log(
-        "ðŸ”‘ Forgot password: ENABLED",
+        "Ã°Å¸â€â€˜ Forgot password: ENABLED",
       );
 
       console.log(
-        "â™»ï¸ Password reset: ENABLED",
+        "Ã¢â„¢Â»Ã¯Â¸Â Password reset: ENABLED",
       );
 
       console.log(
-        "â±ï¸ Reset token expiry: 15 minutes",
+        "Ã¢ÂÂ±Ã¯Â¸Â Reset token expiry: 15 minutes",
       );
 
       console.log(
-        `ðŸ“§ Password reset email: ${
+        `Ã°Å¸â€œÂ§ Password reset email: ${
           mailTransporter
             ? "CONFIGURED"
             : "DEVELOPMENT MODE"
@@ -6110,19 +6108,19 @@ async function startServer(startHttpServer = true) {
       );
 
       console.log(
-        "âš™ï¸ Student settings: ENABLED",
+        "Ã¢Å¡â„¢Ã¯Â¸Â Student settings: ENABLED",
       );
 
       console.log(
-        "ðŸ†” Student ID generation: ENABLED (first real student starts at 1001)",
+        "Ã°Å¸â€ â€ Student ID generation: ENABLED (first real student starts at 1001)",
       );
 
       console.log(
-        `ðŸ†” Next Student ID: ${nextStudentId}`,
+        `Ã°Å¸â€ â€ Next Student ID: ${nextStudentId}`,
       );
 
       console.log(
-        `ðŸ“š Tests loaded: ${tests.size}`,
+        `Ã°Å¸â€œÅ¡ Tests loaded: ${tests.size}`,
       );
 
       console.log(
@@ -6135,12 +6133,12 @@ async function startServer(startHttpServer = true) {
 }
 
 process.on("SIGTERM", () => {
-  console.log("ðŸ›‘ SIGTERM received. Shutting down gracefully.");
+  console.log("Ã°Å¸â€ºâ€˜ SIGTERM received. Shutting down gracefully.");
   process.exit(0);
 });
 
 process.on("SIGINT", () => {
-  console.log("ðŸ›‘ SIGINT received. Shutting down gracefully.");
+  console.log("Ã°Å¸â€ºâ€˜ SIGINT received. Shutting down gracefully.");
   process.exit(0);
 });
 
@@ -6148,6 +6146,7 @@ if (process.env.NETLIFY !== "true") {
   startServer();
 }
 export { app, startServer };
+
 
 
 
