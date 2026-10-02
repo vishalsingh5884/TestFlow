@@ -1,8 +1,8 @@
-﻿import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./Results.css";
 
 const API_BASE = (
-  import.meta.env.VITE_API_URL || "http://localhost:5000"
+  import.meta.env.VITE_API_URL || "/api"
 ).replace(/\/$/, "");
 
 const STUDENT_TOKEN_KEYS = [
@@ -116,10 +116,10 @@ function ResultIcon({ name, size = 18, strokeWidth = 1.8 }) {
 }
 
 function formatDate(value) {
-  if (!value) return "—";
+  if (!value) return "�";
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "—";
+  if (Number.isNaN(date.getTime())) return "�";
 
   return date.toLocaleString("en-IN", {
     dateStyle: "medium",
@@ -211,11 +211,11 @@ function ResultDetails({ result }) {
         <div className="result-information-grid">
           <div>
             <span>Paper ID</span>
-            <strong>{result?.paperId || "—"}</strong>
+            <strong>{result?.paperId || "�"}</strong>
           </div>
           <div>
             <span>Attempt ID</span>
-            <strong>{result?.attemptId || "—"}</strong>
+            <strong>{result?.attemptId || "�"}</strong>
           </div>
           <div>
             <span>Started</span>
@@ -321,7 +321,7 @@ export default function StudentResults({ onBackToDashboard }) {
     <main className="student-results-page">
       <header className="student-results-header">
         <div>
-          <div className="student-results-eyebrow">STUDENT AREA • RESULTS</div>
+          <div className="student-results-eyebrow">STUDENT AREA � RESULTS</div>
           <h1>Results</h1>
           <p>Your automatically graded submitted examinations.</p>
         </div>
@@ -422,7 +422,7 @@ export default function StudentResults({ onBackToDashboard }) {
                   <div key={result.attemptId || `${result.paperId}-${result.submittedAt}`}>
                     <span>{getTestName(result)}</span>
                     <strong>
-                      {getScore(result)}% · {formatDate(result.submittedAt)}
+                      {getScore(result)}% � {formatDate(result.submittedAt)}
                     </strong>
                   </div>
                 ))}
@@ -446,7 +446,7 @@ export default function StudentResults({ onBackToDashboard }) {
               </div>
               <div>
                 <span>Latest Score</span>
-                <strong>{summary.latest ? `${latestScore}%` : "—"}</strong>
+                <strong>{summary.latest ? `${latestScore}%` : "�"}</strong>
               </div>
               <div>
                 <span>Latest Submission</span>

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./App.css";
 
@@ -12,7 +12,7 @@ import ResetPassword from "./ResetPassword.jsx";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000";
+  "/api";
 
 if (
   typeof window !== "undefined" &&
@@ -1481,7 +1481,7 @@ function App() {
               closeForgotPassword
             }
           >
-            ×
+            �
           </button>
 
           <div className="login-content">
@@ -1561,7 +1561,7 @@ function App() {
               closeRegister
             }
           >
-            ×
+            �
           </button>
 
           <div className="login-content">
@@ -1780,7 +1780,7 @@ function App() {
                 <strong>
                   {registerLoading
                     ? "..."
-                    : "→"}
+                    : "?"}
                 </strong>
               </button>
             </form>
@@ -1835,7 +1835,7 @@ function App() {
             );
           }}
         >
-          ×
+          �
         </button>
 
         <div className="login-content">
@@ -1985,7 +1985,7 @@ function App() {
                   className="select-arrow"
                   aria-hidden="true"
                 >
-                  ▼
+                  ?
                 </span>
               </div>
             </div>
@@ -2009,7 +2009,7 @@ function App() {
 
                 <span className="custom-checkbox">
                   <span className="check-symbol">
-                    ✓
+                    ?
                   </span>
                 </span>
 
@@ -2045,7 +2045,7 @@ function App() {
               <strong>
                 {loading
                   ? "..."
-                  : "→"}
+                  : "?"}
               </strong>
             </button>
           </form>

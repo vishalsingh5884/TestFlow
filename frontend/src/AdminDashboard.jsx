@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./AdminDashboard.css";
 import AdminStudents from "./AdminStudents";
 import AdminSettings from "./AdminSettings";
@@ -9,7 +9,7 @@ import Notifications from "./Notifications";
 import PrivateMessages from "./PrivateMessages";
 
 const API_URL = (
-  import.meta.env.VITE_API_URL || "http://localhost:5000"
+  import.meta.env.VITE_API_URL || "/api"
 ).replace(/\/$/, "");
 
 function getAdminToken() {
@@ -52,11 +52,11 @@ function asArray(data, key) {
 }
 
 function formatDate(value) {
-  if (!value) return "—";
+  if (!value) return "�";
 
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) return "—";
+  if (Number.isNaN(date.getTime())) return "�";
 
   return date.toLocaleString([], {
     day: "2-digit",
@@ -68,11 +68,11 @@ function formatDate(value) {
 }
 
 function relativeTime(value) {
-  if (!value) return "—";
+  if (!value) return "�";
 
   const time = new Date(value).getTime();
 
-  if (!Number.isFinite(time)) return "—";
+  if (!Number.isFinite(time)) return "�";
 
   const seconds = Math.max(
     0,
@@ -809,7 +809,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
 
       {message && (
         <div className="create-test-alert create-test-alert-success">
-          <span>✓</span>
+          <span>?</span>
 
           <div>
             <strong>
@@ -831,7 +831,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
         <section className="create-test-main-card">
           <div className="create-test-section-heading">
             <div className="create-test-section-icon">
-              ✦
+              ?
             </div>
 
             <div>
@@ -1140,7 +1140,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
           >
             {questionCountValid ? (
               <>
-                ✓ Question count is valid:
+                ? Question count is valid:
                 {" "}
                 {mcqQuestions} MCQ +{" "}
                 {codingQuestions} Coding ={" "}
@@ -1148,7 +1148,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
               </>
             ) : (
               <>
-                ⚠ Question count mismatch:
+                ? Question count mismatch:
                 {" "}
                 {mcqQuestions} MCQ +{" "}
                 {codingQuestions} Coding ={" "}
@@ -1163,7 +1163,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
         <section className="create-test-main-card">
           <div className="create-test-section-heading">
             <div className="create-test-section-icon">
-              ◈
+              ?
             </div>
 
             <div>
@@ -1295,7 +1295,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
           >
             {difficultyValid ? (
               <>
-                ✓ Difficulty distribution is valid:
+                ? Difficulty distribution is valid:
                 {" "}
                 {easyQuestions} Easy +{" "}
                 {mediumQuestions} Medium +{" "}
@@ -1304,7 +1304,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
               </>
             ) : (
               <>
-                ⚠ Difficulty mismatch:
+                ? Difficulty mismatch:
                 {" "}
                 {easyQuestions} +{" "}
                 {mediumQuestions} +{" "}
@@ -1320,7 +1320,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
         <section className="create-test-main-card create-test-schedule-card">
           <div className="create-test-section-heading">
             <div className="create-test-section-icon">
-              ◷
+              ?
             </div>
 
             <div>
@@ -1393,7 +1393,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
 
         <section className="create-test-main-card">
           <div className="create-test-section-heading">
-            <div className="create-test-section-icon">◉</div>
+            <div className="create-test-section-icon">?</div>
             <div>
               <h2>Student Access</h2>
               <p>Select which StudentIDs can access this test. Leave everyone unselected to allow all students.</p>
@@ -1479,7 +1479,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
                             }}
                           />
                           <span>
-                            <strong>{hasStudentId ? studentId : "ID not generated"}</strong> — {student.name || "Unknown Student"}
+                            <strong>{hasStudentId ? studentId : "ID not generated"}</strong> � {student.name || "Unknown Student"}
                             {student.email ? ` (${student.email})` : ""}
                           </span>
                         </label>
@@ -1503,7 +1503,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
         <section className="create-test-main-card">
           <div className="create-test-section-heading">
             <div className="create-test-section-icon">
-              ✦
+              ?
             </div>
 
             <div>
@@ -1551,9 +1551,9 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
                   fontSize: "10px",
                 }}
               >
-                {totalQuestions} questions •{" "}
-                {mcqQuestions} MCQ •{" "}
-                {codingQuestions} Coding •{" "}
+                {totalQuestions} questions �{" "}
+                {mcqQuestions} MCQ �{" "}
+                {codingQuestions} Coding �{" "}
                 {form.difficulty}
               </span>
             </div>
@@ -1566,7 +1566,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
             >
               {generating
                 ? "Generating..."
-                : "✦ Generate with AI"}
+                : "? Generate with AI"}
             </button>
           </div>
         </section>
@@ -1575,7 +1575,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
           <section className="create-test-main-card">
             <div className="create-test-section-heading">
               <div className="create-test-section-icon">
-                ✎
+                ?
               </div>
 
               <div>
@@ -2117,13 +2117,13 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
 
           <div className="preview-meta">
             <span>
-              ◉{" "}
+              ?{" "}
               {String(form.subject || "").trim() ||
                 "Subject"}
             </span>
 
             <span>
-              ◷ {form.duration || 0} min
+              ? {form.duration || 0} min
             </span>
 
             <span>
@@ -2131,7 +2131,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
             </span>
 
             <span>
-              ◈ {form.difficulty}
+              ? {form.difficulty}
             </span>
 
             <span>
@@ -2237,7 +2237,7 @@ function CreateTestView({ onBack, onCreated, editPaperId }) {
             ) : (
               <>
                 Publish Test
-                <span>→</span>
+                <span>?</span>
               </>
             )}
           </button>
@@ -2686,7 +2686,7 @@ function AdminDashboard({ onLogout }) {
 
           <p>
             Reading real data from
-            the TestFlow backend…
+            the TestFlow backend�
           </p>
         </div>
       </main>
@@ -2727,7 +2727,7 @@ function AdminDashboard({ onLogout }) {
               title="Refresh dashboard"
               type="button"
             >
-              ↻
+              ?
             </button>
 
             <div className="header-admin">
@@ -2753,7 +2753,7 @@ function AdminDashboard({ onLogout }) {
         <div className="admin-stat-grid">
           <article className="admin-stat-card students-card">
             <div className="stat-icon students-icon">
-              👨‍🎓
+              ?????
             </div>
 
             <div className="stat-content">
@@ -2773,7 +2773,7 @@ function AdminDashboard({ onLogout }) {
 
           <article className="admin-stat-card tests-card">
             <div className="stat-icon tests-icon">
-              📝
+              ??
             </div>
 
             <div className="stat-content">
@@ -2791,7 +2791,7 @@ function AdminDashboard({ onLogout }) {
 
           <article className="admin-stat-card attempts-card">
             <div className="stat-icon attempts-icon">
-              📊
+              ??
             </div>
 
             <div className="stat-content">
@@ -2811,7 +2811,7 @@ function AdminDashboard({ onLogout }) {
 
           <article className="admin-stat-card active-card">
             <div className="stat-icon active-icon">
-              ⚡
+              ?
             </div>
 
             <div className="stat-content">
@@ -2856,7 +2856,7 @@ function AdminDashboard({ onLogout }) {
                 }
                 type="button"
               >
-                View All →
+                View All ?
               </button>
             </div>
 
@@ -2935,7 +2935,7 @@ function AdminDashboard({ onLogout }) {
                             {
                               paperId
                             }{" "}
-                            •{" "}
+                            �{" "}
                             {
                               questionsCount
                             }
@@ -2943,7 +2943,7 @@ function AdminDashboard({ onLogout }) {
                             {
                               totalQuestions
                             }{" "}
-                            questions •{" "}
+                            questions �{" "}
                             {
                               attempts
                             }{" "}
@@ -2990,7 +2990,7 @@ function AdminDashboard({ onLogout }) {
                 type="button"
               >
                 <span className="quick-icon">
-                  ＋
+                  +
                 </span>
 
                 <div>
@@ -3004,7 +3004,7 @@ function AdminDashboard({ onLogout }) {
                   </small>
                 </div>
 
-                <b>→</b>
+                <b>?</b>
               </button>
 
               <button
@@ -3014,7 +3014,7 @@ function AdminDashboard({ onLogout }) {
                 type="button"
               >
                 <span className="quick-icon">
-                  ▣
+                  ?
                 </span>
 
                 <div>
@@ -3028,7 +3028,7 @@ function AdminDashboard({ onLogout }) {
                   </small>
                 </div>
 
-                <b>→</b>
+                <b>?</b>
               </button>
 
               <button
@@ -3040,7 +3040,7 @@ function AdminDashboard({ onLogout }) {
                 type="button"
               >
                 <span className="quick-icon">
-                  👨‍🎓
+                  ?????
                 </span>
 
                 <div>
@@ -3054,7 +3054,7 @@ function AdminDashboard({ onLogout }) {
                   </small>
                 </div>
 
-                <b>→</b>
+                <b>?</b>
               </button>
 
               <button
@@ -3066,7 +3066,7 @@ function AdminDashboard({ onLogout }) {
                 type="button"
               >
                 <span className="quick-icon">
-                  📊
+                  ??
                 </span>
 
                 <div>
@@ -3080,7 +3080,7 @@ function AdminDashboard({ onLogout }) {
                   </small>
                 </div>
 
-                <b>→</b>
+                <b>?</b>
               </button>
 
               <button
@@ -3106,7 +3106,7 @@ function AdminDashboard({ onLogout }) {
                   </small>
                 </div>
 
-                <b>→</b>
+                <b>?</b>
               </button>
             </div>
           </section>
@@ -3197,7 +3197,7 @@ function AdminDashboard({ onLogout }) {
             <tbody>
               {items.map((test, index) => (
                 <tr key={test.paperId || test.id || index}>
-                  <td>{test.paperId || test.id || "—"}</td>
+                  <td>{test.paperId || test.id || "�"}</td>
                   <td>{testName(test)}</td>
                   <td>{Number(test.questionCount ?? test.questions?.length ?? 0)}/{Number(test.totalQuestions ?? test.questionCount ?? test.questions?.length ?? 0)}</td>
                   <td>{Number(test.attempts ?? test.attemptCount ?? 0)}</td>
@@ -3351,7 +3351,7 @@ function AdminDashboard({ onLogout }) {
                       <td>
                         {
                           result.paperId ||
-                          "—"
+                          "�"
                         }
                       </td>
 
@@ -3359,21 +3359,21 @@ function AdminDashboard({ onLogout }) {
                         {
                           result.subject ||
                           result.testName ||
-                          "—"
+                          "�"
                         }
                       </td>
 
                       <td>
                         {result.score ==
                         null
-                          ? "—"
+                          ? "�"
                           : `${result.score}%`}
                       </td>
 
                       <td>
                         {result.correct ==
                         null
-                          ? "—"
+                          ? "�"
                           : `${result.correct}/${result.totalQuestions || 0}`}
                       </td>
 
@@ -3495,7 +3495,7 @@ function AdminDashboard({ onLogout }) {
                         {
                           question.subject ||
                           question.testName ||
-                          "—"
+                          "�"
                         }
                       </td>
 
@@ -3523,7 +3523,7 @@ function AdminDashboard({ onLogout }) {
                       <td className="question-cell">
                         {
                           question.question ||
-                          "—"
+                          "�"
                         }
                       </td>
                     </tr>
@@ -3586,7 +3586,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>▦</span>
+            <span>?</span>
             Dashboard
           </button>
 
@@ -3602,7 +3602,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>＋</span>
+            <span>+</span>
             Create Test
           </button>
 
@@ -3617,7 +3617,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>📝</span>
+            <span>??</span>
             Tests
           </button>
 
@@ -3634,7 +3634,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>👨‍🎓</span>
+            <span>?????</span>
             Students
           </button>
 
@@ -3651,7 +3651,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>📊</span>
+            <span>??</span>
             Results
           </button>
 
@@ -3669,7 +3669,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>📚</span>
+            <span>??</span>
             Questions
           </button>
 
@@ -3684,7 +3684,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>🛡️</span>
+            <span>???</span>
             Manage Admins
           </button>
 
@@ -3693,7 +3693,7 @@ function AdminDashboard({ onLogout }) {
             onClick={() => navigate("groups")}
             type="button"
           >
-            <span>👥</span>
+            <span>??</span>
             Groups
           </button>
 
@@ -3702,7 +3702,7 @@ function AdminDashboard({ onLogout }) {
             onClick={() => navigate("notifications")}
             type="button"
           >
-            <span>🔔</span>
+            <span>??</span>
             Notifications
           </button>
 
@@ -3711,7 +3711,7 @@ function AdminDashboard({ onLogout }) {
             onClick={() => navigate("private-messages")}
             type="button"
           >
-            <span>✉️</span>
+            <span>??</span>
             Private Messages
           </button>
 
@@ -3728,7 +3728,7 @@ function AdminDashboard({ onLogout }) {
             }
             type="button"
           >
-            <span>⚙</span>
+            <span>?</span>
             Settings
           </button>
         </nav>
@@ -3738,7 +3738,7 @@ function AdminDashboard({ onLogout }) {
           onClick={onLogout}
           type="button"
         >
-          <span>↪</span>
+          <span>?</span>
           Logout
         </button>
       </aside>
@@ -3822,7 +3822,7 @@ function AdminDashboard({ onLogout }) {
 
         <footer className="admin-data-footer">
           <span className="live-dot">
-            ●
+            ?
           </span>
 
           <strong>

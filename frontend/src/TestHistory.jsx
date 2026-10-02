@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./TestHistory.css";
 
 /*
@@ -8,7 +8,7 @@ LOCAL TESTFLOW BACKEND
 */
 const API_BASE = (
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
+  "/api"
 ).replace(/\/$/, "");
 
 const STUDENT_TOKEN_KEYS = [
@@ -37,13 +37,13 @@ function getStoredToken() {
 
 function formatDate(value) {
   if (!value) {
-    return "—";
+    return "�";
   }
 
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
-    return "—";
+    return "�";
   }
 
   return date.toLocaleDateString("en-IN", {
@@ -59,13 +59,13 @@ function formatDate(value) {
 
 function formatTime(value) {
   if (!value) {
-    return "—";
+    return "�";
   }
 
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
-    return "—";
+    return "�";
   }
 
   return date.toLocaleTimeString("en-IN", {
@@ -80,7 +80,7 @@ function formatTime(value) {
 
 function formatDuration(start, end) {
   if (!start || !end) {
-    return "—";
+    return "�";
   }
 
   const startTime = new Date(start).getTime();
@@ -91,7 +91,7 @@ function formatDuration(start, end) {
     Number.isNaN(endTime) ||
     endTime < startTime
   ) {
-    return "—";
+    return "�";
   }
 
   const totalMinutes = Math.round((endTime - startTime) / 60000);
@@ -164,14 +164,14 @@ function getStatusIcon(status) {
   const normalized = normalizeStatus(status);
 
   if (normalized === "COMPLETED") {
-    return "✓";
+    return "?";
   }
 
   if (normalized === "TERMINATED") {
     return "!";
   }
 
-  return "•";
+  return "�";
 }
 
 /* =========================================================
@@ -317,7 +317,7 @@ function normalizeAttempt(item) {
       item?.paperId ||
       item?.paperID ||
       item?.testId ||
-      "—",
+      "�",
 
     subject:
       item?.subject ||
@@ -392,7 +392,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
       if (!response.ok) {
         if (response.status === 404) {
           throw new Error(
-            "Test History API route was not found on the local backend. Restart server.js on http://localhost:5000."
+            "Test History API route was not found on the local backend. Restart server.js on /api."
           );
         }
 
@@ -524,7 +524,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
             onClick={() => handleNavigation("dashboard")}
             type="button"
           >
-            <span>←</span>
+            <span>?</span>
             Dashboard
           </button>
         </header>
@@ -545,7 +545,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
 
             <div className="history-controls">
               <div className="history-search">
-                <span className="search-icon">⌕</span>
+                <span className="search-icon">?</span>
                 <input
                   type="text"
                   value={search}
@@ -596,7 +596,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
             !error &&
             filteredAttempts.length === 0 && (
               <div className="history-state">
-                <div className="state-large-icon">▢</div>
+                <div className="state-large-icon">?</div>
                 <h3>No test history found</h3>
                 <p>
                   Your examination attempts will appear here.
@@ -607,7 +607,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
                   }
                   type="button"
                 >
-                  Browse My Tests →
+                  Browse My Tests ?
                 </button>
               </div>
             )}
@@ -692,7 +692,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
                           {/* QUESTIONS */}
                           <td className="center-column">
                             <span className="question-count">
-                              {item.totalQuestions || "—"}
+                              {item.totalQuestions || "�"}
                             </span>
                           </td>
 
@@ -719,7 +719,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
                               </div>
                             ) : (
                               <span className="table-muted">
-                                —
+                                �
                               </span>
                             )}
                           </td>
@@ -757,7 +757,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
                                 type="button"
                               >
                                 View Result
-                                <span>→</span>
+                                <span>?</span>
                               </button>
                             )}
 
@@ -778,7 +778,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
 
                             {status === "UNKNOWN" && (
                               <span className="table-muted">
-                                —
+                                �
                               </span>
                             )}
                           </td>
@@ -793,7 +793,7 @@ export default function TestHistory({ onNavigate, onViewResult }) {
 
         {/* FOOTER */}
         <footer className="history-footer">
-          <span>🔒 TESTFLOW Secure Student Portal</span>
+          <span>?? TESTFLOW Secure Student Portal</span>
           <span>
             Examination records are securely maintained.
           </span>

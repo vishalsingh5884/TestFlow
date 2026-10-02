@@ -1,8 +1,8 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./ExamScreen.css";
 const API_URL = (
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
+  "/api"
 ).replace(/\/$/, "");
 
 function getQuestionKey(question, fallbackIndex) {
@@ -389,7 +389,7 @@ function ExamScreen({ test, onExit }) {
                   {result.score !== undefined &&
                   result.score !== null
                     ? result.score
-                    : "—"}
+                    : "�"}
                 </strong>
               </div>
             </div>
@@ -468,7 +468,7 @@ function ExamScreen({ test, onExit }) {
             {test.paperId ||
               test.paper_id ||
               test.id ||
-              "—"}
+              "�"}
           </span>
         </div>
 
@@ -769,7 +769,7 @@ function ExamScreen({ test, onExit }) {
           Your answers are securely processed
         </span>
 
-        <span>© 2026</span>
+        <span>� 2026</span>
       </footer>
     </div>
   );

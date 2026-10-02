@@ -1,4 +1,4 @@
-﻿import React, {
+import React, {
   useCallback,
   useEffect,
   useMemo,
@@ -176,7 +176,7 @@ function ExamIcon({
 
 const API_BASE = (
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
+  "/api"
 ).replace(/\/$/, "");
 
 const STUDENT_TOKEN_KEYS = [
@@ -3395,7 +3395,7 @@ export default function StudentTest(
           </strong>
 
           <span>
-            PAPER ID <span aria-hidden="true">•</span>{" "}
+            PAPER ID <span aria-hidden="true">�</span>{" "}
             {test.paperId}
           </span>
         </div>
@@ -3528,7 +3528,7 @@ export default function StudentTest(
         <div
           className={`risk-pill ${proctorRisk.toLowerCase()}`}
         >
-          <ExamIcon name="shield" size={15} /> RISK <span aria-hidden="true">•</span>{" "}
+          <ExamIcon name="shield" size={15} /> RISK <span aria-hidden="true">�</span>{" "}
           {proctorRisk}
         </div>
       </div>

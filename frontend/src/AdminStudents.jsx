@@ -1,9 +1,9 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./AdminStudents.css";
 
 const API_URL = (
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
+  "/api"
 ).replace(/\/$/, "");
 
 function getAdminToken() {
@@ -289,21 +289,21 @@ function AdminStudents({ onBack }) {
           disabled={loading}
         >
           {loading
-            ? "Refreshing…"
-            : "↻ Refresh"}
+            ? "Refreshing�"
+            : "? Refresh"}
         </button>
       </header>
 
       <section className="students-toolbar">
         <div className="students-search">
-          <span>🔍</span>
+          <span>??</span>
 
           <input
             value={search}
             onChange={(event) =>
               setSearch(event.target.value)
             }
-            placeholder="Search by name, email or student ID…"
+            placeholder="Search by name, email or student ID�"
           />
         </div>
 
@@ -389,7 +389,7 @@ function AdminStudents({ onBack }) {
       <section className="students-table-panel">
         {loading ? (
           <div className="students-empty">
-            Loading students…
+            Loading students�
           </div>
         ) : filteredStudents.length ===
           0 ? (
@@ -465,7 +465,7 @@ function AdminStudents({ onBack }) {
                         <td>
                           {student.studentId ||
                             student.id ||
-                            "—"}
+                            "�"}
                         </td>
 
                         <td>
@@ -489,7 +489,7 @@ function AdminStudents({ onBack }) {
                         <td>
                           {student.averageScore ==
                           null
-                            ? "—"
+                            ? "�"
                             : `${student.averageScore}%`}
                         </td>
 
@@ -498,7 +498,7 @@ function AdminStudents({ onBack }) {
                             ? new Date(
                                 student.createdAt,
                               ).toLocaleDateString()
-                            : "—"}
+                            : "�"}
                         </td>
 
                         <td>
@@ -590,7 +590,7 @@ function AdminStudents({ onBack }) {
                 setSelected(null)
               }
             >
-              ×
+              �
             </button>
 
             <div className="modal-avatar">
@@ -652,7 +652,7 @@ function AdminStudents({ onBack }) {
                 <strong>
                   {selected.averageScore ==
                   null
-                    ? "—"
+                    ? "�"
                     : `${selected.averageScore}%`}
                 </strong>
               </div>
@@ -664,7 +664,7 @@ function AdminStudents({ onBack }) {
                     ? new Date(
                         selected.createdAt,
                       ).toLocaleString()
-                    : "—"}
+                    : "�"}
                 </strong>
               </div>
             </div>

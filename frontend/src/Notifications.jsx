@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Notifications.css";
-const API_URL=(import.meta.env.VITE_API_URL||"http://localhost:5000").replace(/\/$/,"");
+const API_URL=(import.meta.env.VITE_API_URL||"/api").replace(/\/$/,"");
 const token=()=>localStorage.getItem("access_token")||sessionStorage.getItem("access_token")||localStorage.getItem("student_token")||sessionStorage.getItem("student_token")||"";
 const headers=(json=false)=>({Accept:"application/json",...(json?{"Content-Type":"application/json"}:{}),Authorization:`Bearer ${token()}`});
 export default function Notifications(){const [items,setItems]=useState([]);const [invites,setInvites]=useState([]);const [error,setError]=useState("");

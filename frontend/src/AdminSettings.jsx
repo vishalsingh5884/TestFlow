@@ -1,9 +1,9 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./AdminSettings.css";
 
 const API_URL = (
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
+  "/api"
 ).replace(/\/$/, "");
 
 const DEFAULTS = {
@@ -434,7 +434,7 @@ function AdminSettings({ onBack }) {
         <header className="admin-settings-header">
           <div className="admin-settings-header-content">
             <div className="admin-settings-eyebrow">
-              TESTFLOW • ADMINISTRATION
+              TESTFLOW � ADMINISTRATION
             </div>
 
             <h1>Settings</h1>
@@ -451,7 +451,7 @@ function AdminSettings({ onBack }) {
               className="admin-settings-back-button"
               onClick={onBack}
             >
-              <span>←</span>
+              <span>?</span>
               Dashboard
             </button>
           </div>
@@ -468,10 +468,10 @@ function AdminSettings({ onBack }) {
           >
             <span className="admin-settings-notice-icon">
               {messageType === "success"
-                ? "✓"
+                ? "?"
                 : messageType === "error"
                   ? "!"
-                  : "•"}
+                  : "�"}
             </span>
 
             <span>{message}</span>
@@ -875,7 +875,7 @@ function AdminSettings({ onBack }) {
                                 }}
                               >
                                 {admin.email}
-                                {admin.mobileNumber ? ` • ${admin.mobileNumber}` : ""}
+                                {admin.mobileNumber ? ` � ${admin.mobileNumber}` : ""}
                               </div>
                             </div>
 
@@ -906,7 +906,7 @@ function AdminSettings({ onBack }) {
                                   zIndex: 2,
                                 }}
                               >
-                                {removingAdminId === admin.id ? "Removing..." : "✕ Remove"}
+                                {removingAdminId === admin.id ? "Removing..." : "? Remove"}
                               </button>
                             )}
                           </div>
@@ -1121,7 +1121,7 @@ function AdminSettings({ onBack }) {
               <section className="admin-settings-info-card">
                 <div className="admin-settings-info-header">
                   <div className="admin-settings-info-icon">
-                    ❖
+                    ?
                   </div>
 
                   <div>
@@ -1225,7 +1225,7 @@ function AdminSettings({ onBack }) {
                   >
                     {settings.maintenanceMode
                       ? "!"
-                      : "✓"}
+                      : "?"}
                   </div>
 
                   <div>

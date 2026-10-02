@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./StudentDashboard.css";
 
 import MyTests from "./MyTests";
@@ -11,7 +11,7 @@ import PrivateMessages from "./PrivateMessages";
 
 const API_URL = (
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
+  "/api"
 ).replace(/\/$/, "");
 
 const STUDENT_TOKEN_KEYS = [
@@ -405,42 +405,42 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
   const navItems = [
     {
       id: "dashboard",
-      icon: "⌂",
+      icon: "�",
       label: "Dashboard",
     },
     {
       id: "my-tests",
-      icon: "▣",
+      icon: "?",
       label: "My Tests",
     },
     {
       id: "test-history",
-      icon: "◷",
+      icon: "?",
       label: "Test History",
     },
     {
       id: "results",
-      icon: "✓",
+      icon: "?",
       label: "Results",
     },
     {
       id: "groups",
-      icon: "👥",
+      icon: "??",
       label: "Groups",
     },
     {
       id: "notifications",
-      icon: "🔔",
+      icon: "??",
       label: "Notifications",
     },
     {
       id: "private-messages",
-      icon: "✉",
+      icon: "?",
       label: "Private Messages",
     },
     {
       id: "settings",
-      icon: "⚙",
+      icon: "?",
       label: "Settings",
     },
   ];
@@ -450,7 +450,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
    * StudentID-filtered backend endpoint.
    */
   const availableTests = testsLoading
-    ? "—"
+    ? "�"
     : onlineTests.length;
 
   const renderDashboard = () => (
@@ -477,7 +477,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               onClick={() => navigate("my-tests")}
             >
               <span>View My Tests</span>
-              <span className="btn-arrow">→</span>
+              <span className="btn-arrow">?</span>
             </button>
 
             <button
@@ -495,7 +495,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
           <div className="hero-circle hero-circle-two" />
 
           <div className="hero-card-floating">
-            <div className="floating-icon">✓</div>
+            <div className="floating-icon">?</div>
 
             <div>
               <strong>Keep learning</strong>
@@ -503,13 +503,13 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
             </div>
           </div>
 
-          <div className="hero-big-icon">✦</div>
+          <div className="hero-big-icon">?</div>
         </div>
       </section>
 
       <section className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon orange-icon">▣</div>
+          <div className="stat-icon orange-icon">?</div>
 
           <div className="stat-content">
             <span className="stat-label">
@@ -523,7 +523,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon pink-icon">✓</div>
+          <div className="stat-icon pink-icon">?</div>
 
           <div className="stat-content">
             <span className="stat-label">
@@ -544,21 +544,21 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               Average Score
             </span>
 
-            <strong>—</strong>
+            <strong>�</strong>
 
             <small>No attempts yet</small>
           </div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon green-icon">★</div>
+          <div className="stat-icon green-icon">?</div>
 
           <div className="stat-content">
             <span className="stat-label">
               Best Score
             </span>
 
-            <strong>—</strong>
+            <strong>�</strong>
 
             <small>Your highest score</small>
           </div>
@@ -620,7 +620,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
                 : "Start Test"}
 
               {!joinLoading && (
-                <span>→</span>
+                <span>?</span>
               )}
             </button>
           </form>
@@ -635,7 +635,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
             >
               <span>
                 {joinMessageType === "success"
-                  ? "✓"
+                  ? "?"
                   : "!"}
               </span>
 
@@ -644,7 +644,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
           )}
 
           <div className="join-note">
-            <span>ⓘ</span>
+            <span>?</span>
 
             Paper IDs are provided by your teacher or administrator.
           </div>
@@ -660,7 +660,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               <h2>Continue Learning</h2>
             </div>
 
-            <div className="quick-star">✦</div>
+            <div className="quick-star">?</div>
           </div>
 
           <div className="quick-list">
@@ -670,7 +670,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               className="quick-item"
             >
               <span className="quick-item-icon orange-soft">
-                ▣
+                ?
               </span>
 
               <span className="quick-item-text">
@@ -682,7 +682,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               </span>
 
               <span className="quick-arrow">
-                →
+                ?
               </span>
             </button>
 
@@ -692,7 +692,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               className="quick-item"
             >
               <span className="quick-item-icon pink-soft">
-                ◷
+                ?
               </span>
 
               <span className="quick-item-text">
@@ -704,7 +704,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               </span>
 
               <span className="quick-arrow">
-                →
+                ?
               </span>
             </button>
 
@@ -714,7 +714,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               className="quick-item"
             >
               <span className="quick-item-icon purple-soft">
-                ✓
+                ?
               </span>
 
               <span className="quick-item-text">
@@ -726,7 +726,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               </span>
 
               <span className="quick-arrow">
-                →
+                ?
               </span>
             </button>
           </div>
@@ -764,7 +764,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
           <div className="step-card">
             <div className="step-number">02</div>
 
-            <div className="step-icon">→</div>
+            <div className="step-icon">?</div>
 
             <h3>Join the Test</h3>
 
@@ -778,7 +778,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
           <div className="step-card">
             <div className="step-number">03</div>
 
-            <div className="step-icon">✓</div>
+            <div className="step-icon">?</div>
 
             <h3>Submit & Review</h3>
 
@@ -791,7 +791,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
 
       <section className="info-grid">
         <div className="info-card info-orange">
-          <div className="info-icon">⚡</div>
+          <div className="info-icon">?</div>
 
           <div>
             <h3>Stay Consistent</h3>
@@ -803,7 +803,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
         </div>
 
         <div className="info-card info-pink">
-          <div className="info-icon">♥</div>
+          <div className="info-icon">?</div>
 
           <div>
             <h3>Focus on Progress</h3>
@@ -922,7 +922,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
 
         <div className="sidebar-bottom">
           <div className="sidebar-tip">
-            <div className="tip-icon">✦</div>
+            <div className="tip-icon">?</div>
 
             <div>
               <strong>
@@ -940,7 +940,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
             className="logout-btn"
             onClick={handleLogout}
           >
-            <span>↪</span>
+            <span>?</span>
             <span>Logout</span>
           </button>
         </div>
@@ -981,7 +981,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               aria-label="Notifications"
               onClick={() => navigate("notifications")}
             >
-              ♢
+              ?
 
               <span className="notification-dot" />
             </button>
@@ -1002,7 +1002,7 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
               </div>
 
               <span className="profile-chevron">
-                ⌄
+                ?
               </span>
             </div>
           </div>
@@ -1014,11 +1014,11 @@ const StudentDashboard = ({ onLogout, onStartTest }) => {
 
         <footer className="student-footer">
           <span>
-            © {new Date().getFullYear()} TESTFLOW
+            � {new Date().getFullYear()} TESTFLOW
           </span>
 
           <span className="footer-dot">
-            •
+            �
           </span>
 
           <span>

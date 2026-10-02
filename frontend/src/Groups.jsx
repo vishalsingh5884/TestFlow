@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./Groups.css";
 
-const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
+const API_URL = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
 const adminToken = () => localStorage.getItem("access_token") || sessionStorage.getItem("access_token") || localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken") || "";
 const studentToken = () => localStorage.getItem("student_token") || sessionStorage.getItem("student_token") || "";
 const headers = (json=false) => ({ Accept:"application/json", ...(json ? {"Content-Type":"application/json"}:{}), Authorization:`Bearer ${adminToken() || studentToken()}` });

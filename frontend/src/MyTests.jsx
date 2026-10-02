@@ -1,4 +1,4 @@
-﻿import React, {
+import React, {
   useCallback,
   useEffect,
   useMemo,
@@ -9,7 +9,7 @@ import "./MyTests.css";
 
 const API_BASE = (
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
+  "/api"
 ).replace(/\/$/, "");
 
 const STUDENT_TOKEN_KEYS = [
@@ -174,14 +174,14 @@ function getTestIcon(subject = "") {
     value.includes("algorithm") ||
     value.includes("dsa")
   ) {
-    return "❖";
+    return "?";
   }
 
   if (
     value.includes("database") ||
     value.includes("sql")
   ) {
-    return "▤";
+    return "?";
   }
 
   if (
@@ -189,14 +189,14 @@ function getTestIcon(subject = "") {
     value.includes("html") ||
     value.includes("javascript")
   ) {
-    return "⌘";
+    return "?";
   }
 
   if (
     value.includes("ai") ||
     value.includes("machine")
   ) {
-    return "✦";
+    return "?";
   }
 
   return "T";
@@ -551,7 +551,7 @@ export default function MyTests({
       <header className="my-tests-header">
         <div className="my-tests-heading">
           <div className="my-tests-eyebrow">
-            STUDENT PORTAL • EXAMINATION CENTRE
+            STUDENT PORTAL � EXAMINATION CENTRE
           </div>
 
           <div className="my-tests-title-row">
@@ -600,7 +600,7 @@ export default function MyTests({
 
         <div className="test-search">
           <span className="search-icon" aria-hidden="true">
-            🔍
+            ??
           </span>
 
           <input
@@ -618,7 +618,7 @@ export default function MyTests({
               aria-label="Clear search"
               type="button"
             >
-              ×
+              �
             </button>
           )}
         </div>
@@ -702,7 +702,7 @@ export default function MyTests({
 
         <div className="empty-tests">
           <div className="empty-icon">
-            <span>🔍</span>
+            <span>??</span>
           </div>
 
           <div className="empty-eyebrow">NO MATCHING EXAMINATIONS</div>
@@ -811,7 +811,7 @@ export default function MyTests({
 
                 <div className="test-details">
                   <div className="test-detail">
-                    <span className="detail-icon">◫</span>
+                    <span className="detail-icon">?</span>
 
                     <div>
                       <small>QUESTIONS</small>
@@ -821,7 +821,7 @@ export default function MyTests({
                   </div>
 
                   <div className="test-detail">
-                    <span className="detail-icon">◈</span>
+                    <span className="detail-icon">?</span>
 
                     <div>
                       <small>TYPE</small>
@@ -831,7 +831,7 @@ export default function MyTests({
                   </div>
 
                   <div className="test-detail">
-                    <span className="detail-icon">◷</span>
+                    <span className="detail-icon">?</span>
 
                     <div>
                       <small>DURATION</small>
@@ -847,7 +847,7 @@ export default function MyTests({
 
                 <div className="test-card-footer">
                   <div className="security-info">
-                    <span className="security-icon">✓</span>
+                    <span className="security-icon">?</span>
 
                     <div>
                       <strong>Secure assessment</strong>
@@ -885,7 +885,7 @@ export default function MyTests({
                         : "START TEST"}
                     </span>
 
-                    <span className="button-arrow">→</span>
+                    <span className="button-arrow">?</span>
                   </button>
                 </div>
               </article>
@@ -917,7 +917,7 @@ export default function MyTests({
             className="back-dashboard-button"
             onClick={onBackToDashboard}
           >
-            <span>←</span>
+            <span>?</span>
             Dashboard
           </button>
         )}
