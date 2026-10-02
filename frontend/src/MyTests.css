@@ -1,0 +1,807 @@
+/* =========================================================
+   TESTFLOW — MY TESTS (FULLY CONSOLIDATED THEME)
+   DEEP EMERALD + DARK FOREST + CHAMPAGNE GOLD
+========================================================= */
+
+:root {
+  --mt-bg: #050b09;
+  --mt-card-bg: #0b1612;
+  --mt-card-inner: #08120e;
+  --mt-card-border: rgba(215, 173, 88, 0.35);
+
+  --mt-gold: #d7ad58;
+  --mt-gold-soft: #f0d18c;
+  --mt-mint: #23e1a0;
+  --mt-mint-glow: rgba(35, 225, 160, 0.15);
+
+  --mt-white: #ffffff;
+  --mt-muted: #94a3b8;
+  --mt-danger: #f87171;
+}
+
+/* =========================================================
+   PAGE CONTAINER
+========================================================= */
+
+body .my-tests-page,
+.student-dashboard .my-tests-page,
+.my-tests-page {
+  min-height: 100vh !important;
+  position: relative !important;
+  overflow-x: hidden !important;
+  padding: 32px !important;
+  background-color: var(--mt-bg) !important;
+  background: var(--mt-bg) !important;
+  background-image: none !important;
+  color: var(--mt-white) !important;
+  font-family: Inter, system-ui, -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+}
+
+.my-tests-page * {
+  box-sizing: border-box;
+}
+
+.my-tests-page::before {
+  display: none !important;
+}
+
+/* =========================================================
+   HEADER & COUNT CARD
+========================================================= */
+
+body .my-tests-header,
+.student-dashboard .my-tests-header,
+.my-tests-header {
+  position: relative !important;
+  z-index: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  margin-bottom: 24px !important;
+  padding: 24px 28px !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 16px !important;
+  background-color: var(--mt-card-bg) !important;
+  background: var(--mt-card-bg) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5) !important;
+}
+
+.my-tests-heading {
+  min-width: 0 !important;
+}
+
+.my-tests-eyebrow {
+  color: var(--mt-mint) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 6px !important;
+}
+
+.my-tests-title-row h1 {
+  margin: 0 0 4px 0 !important;
+  color: #ffffff !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.my-tests-title-row p {
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 0.85 !important;
+}
+
+/* Count Card & Live Dot */
+body .test-count-card,
+.test-count-card {
+  position: relative !important;
+  min-width: 190px !important;
+  padding: 18px 22px !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 14px !important;
+  background-color: var(--mt-card-inner) !important;
+  background: var(--mt-card-inner) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.test-count-card::before {
+  display: none !important;
+}
+
+body .count-card-top,
+.student-dashboard .count-card-top,
+.count-card-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+}
+
+body .count-card-top span,
+.count-card-top span {
+  display: inline-block !important;
+  color: var(--mt-gold) !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+body .count-live-dot,
+.count-live-dot {
+  position: static !important;
+  display: inline-block !important;
+  width: 6px !important;
+  height: 6px !important;
+  flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  background-color: var(--mt-mint) !important;
+  box-shadow: 0 0 8px rgba(35, 225, 160, 0.6) !important;
+  margin: 0 !important;
+}
+
+.test-count-card strong {
+  display: block !important;
+  margin-top: 6px !important;
+  color: #ffffff !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.test-count-card small {
+  display: block !important;
+  margin-top: 6px !important;
+  color: var(--mt-muted) !important;
+  font-size: 10px !important;
+}
+
+/* =========================================================
+   TOOLBAR, CONTROLS & FILTERS
+========================================================= */
+
+body .my-tests-toolbar,
+.student-dashboard .my-tests-toolbar,
+.my-tests-toolbar {
+  position: relative !important;
+  z-index: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+  padding: 14px 18px !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 14px !important;
+  background-color: var(--mt-card-bg) !important;
+  background: var(--mt-card-bg) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Toolbar Label Stack */
+body .toolbar-label,
+.student-dashboard .toolbar-label,
+.toolbar-label {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  min-width: 130px !important;
+  padding-left: 4px !important;
+}
+
+body .toolbar-label span,
+.toolbar-label span {
+  display: block !important;
+  color: var(--mt-gold) !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+  line-height: 1.2 !important;
+}
+
+body .toolbar-label strong,
+.toolbar-label strong {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Search Box */
+body .test-search,
+.test-search {
+  position: relative !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 40px !important;
+  padding: 0 12px !important;
+  gap: 8px !important;
+  border: 1px solid rgba(215, 173, 88, 0.35) !important;
+  border-radius: 8px !important;
+  background-color: var(--mt-card-inner) !important;
+  background: var(--mt-card-inner) !important;
+}
+
+.test-search .search-icon {
+  position: static !important;
+  color: var(--mt-gold) !important;
+  font-size: 14px !important;
+  margin: 0 !important;
+}
+
+.test-search input {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  padding: 0 !important;
+}
+
+.test-search input::placeholder {
+  color: var(--mt-muted) !important;
+}
+
+.clear-search {
+  position: absolute !important;
+  right: 8px !important;
+  width: 22px !important;
+  height: 22px !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 50% !important;
+  background: var(--mt-card-bg) !important;
+  color: var(--mt-gold) !important;
+  cursor: pointer !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+/* Filter Pills */
+body .test-filters,
+.test-filters {
+  display: flex !important;
+  gap: 6px !important;
+  padding: 4px !important;
+  border: 1px solid rgba(215, 173, 88, 0.25) !important;
+  border-radius: 10px !important;
+  background: var(--mt-card-inner) !important;
+}
+
+body .test-filters button,
+.test-filters button {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: none !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--mt-muted) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.test-filters button small {
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--mt-muted) !important;
+  font-size: 9px !important;
+}
+
+body .test-filters button.active,
+.test-filters button.active {
+  color: #000000 !important;
+  background: var(--mt-gold) !important;
+}
+
+body .test-filters button.active small,
+.test-filters button.active small {
+  color: #000000 !important;
+  background: rgba(0, 0, 0, 0.15) !important;
+  font-weight: 800 !important;
+}
+
+/* =========================================================
+   CARDS GRID & CARDS
+========================================================= */
+
+.tests-grid {
+  position: relative !important;
+  z-index: 1 !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)) !important;
+  gap: 22px !important;
+}
+
+/* Card Outer Box */
+body .test-card,
+.student-dashboard .test-card,
+.test-card {
+  position: relative !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 16px !important;
+  background-color: var(--mt-card-bg) !important;
+  background: var(--mt-card-bg) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.test-card::before {
+  display: none !important;
+}
+
+body .test-card:hover,
+.test-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: var(--mt-gold) !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65), 0 0 15px rgba(215, 173, 88, 0.15) !important;
+}
+
+/* Card Header */
+.test-card-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 20px 20px 0 20px !important;
+}
+
+.test-card-identity {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+body .test-icon,
+.test-icon {
+  width: 42px !important;
+  height: 42px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 10px !important;
+  background-color: var(--mt-card-inner) !important;
+  background: var(--mt-card-inner) !important;
+  color: var(--mt-mint) !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+}
+
+/* Paper ID Label + Value */
+.test-card-code {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+}
+
+.test-card-code span {
+  display: block !important;
+  color: var(--mt-gold) !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1 !important;
+}
+
+.test-card-code strong {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  font-family: monospace !important;
+  line-height: 1 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Status Pill */
+.test-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 10px !important;
+  border-radius: 20px !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  border: 1px solid var(--mt-card-border) !important;
+  background: rgba(215, 173, 88, 0.1) !important;
+  color: var(--mt-gold) !important;
+}
+
+.test-status > span {
+  width: 5px !important;
+  height: 5px !important;
+  border-radius: 50% !important;
+  background: var(--mt-gold) !important;
+}
+
+.test-status.completed {
+  border-color: rgba(35, 225, 160, 0.35) !important;
+  background: rgba(35, 225, 160, 0.12) !important;
+  color: var(--mt-mint) !important;
+}
+
+.test-status.completed > span {
+  background: var(--mt-mint) !important;
+}
+
+/* Card Content */
+.test-card-content {
+  padding: 18px 20px !important;
+}
+
+.test-label {
+  margin-bottom: 6px !important;
+  color: var(--mt-gold) !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+}
+
+.test-card-content h2 {
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.test-title {
+  margin: 4px 0 0 0 !important;
+  color: var(--mt-muted) !important;
+  font-size: 11px !important;
+}
+
+/* Programming Language */
+.language-line {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-top: 14px !important;
+  padding-top: 10px !important;
+  border-top: 1px solid rgba(215, 173, 88, 0.15) !important;
+}
+
+.language-line span {
+  color: var(--mt-gold) !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.language-line strong {
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Topic Tags */
+.test-topic-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  margin-top: 12px !important;
+}
+
+body .test-topic-list span,
+.test-topic-list span {
+  padding: 5px 10px !important;
+  border: 1px solid rgba(215, 173, 88, 0.3) !important;
+  border-radius: 6px !important;
+  background-color: var(--mt-card-inner) !important;
+  background: var(--mt-card-inner) !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Card Details Grid (Questions, Type, Duration) */
+.test-details {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  margin: 0 20px !important;
+  padding: 14px 0 !important;
+  border-top: 1px solid rgba(215, 173, 88, 0.15) !important;
+  border-bottom: 1px solid rgba(215, 173, 88, 0.15) !important;
+  gap: 8px !important;
+}
+
+.test-detail {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.detail-icon {
+  color: var(--mt-gold) !important;
+  font-size: 15px !important;
+  flex-shrink: 0 !important;
+}
+
+.test-detail div {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+
+.test-detail small {
+  display: block !important;
+  color: var(--mt-gold) !important;
+  font-size: 7px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  line-height: 1 !important;
+}
+
+.test-detail strong {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Card Footer & Security Info */
+.test-card-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 16px 20px !important;
+}
+
+.security-info {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+body .security-info .security-icon,
+.student-dashboard .security-info .security-icon,
+.security-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 26px !important;
+  height: 26px !important;
+  flex-shrink: 0 !important;
+  border: 1px solid rgba(35, 225, 160, 0.4) !important;
+  border-radius: 7px !important;
+  background-color: rgba(35, 225, 160, 0.12) !important;
+  background: rgba(35, 225, 160, 0.12) !important;
+  color: #23e1a0 !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.security-info strong {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+
+.security-info span {
+  display: block !important;
+  color: var(--mt-muted) !important;
+  font-size: 9px !important;
+}
+
+/* Start / Resume Button */
+body .start-test-button,
+.start-test-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 16px !important;
+  border: 1px solid var(--mt-gold) !important;
+  border-radius: 8px !important;
+  background-color: var(--mt-card-inner) !important;
+  background: var(--mt-card-inner) !important;
+  color: var(--mt-gold) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: none !important;
+}
+
+body .start-test-button:hover:not(:disabled),
+.start-test-button:hover:not(:disabled) {
+  background-color: var(--mt-gold) !important;
+  background: var(--mt-gold) !important;
+  color: #000000 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 15px rgba(215, 173, 88, 0.3) !important;
+}
+
+body .start-test-button:hover:not(:disabled) .button-arrow {
+  color: #000000 !important;
+}
+
+.button-arrow {
+  color: var(--mt-gold) !important;
+  font-size: 13px !important;
+}
+
+body .start-test-button:disabled,
+.start-test-button:disabled {
+  opacity: 0.6 !important;
+  border-color: rgba(215, 173, 88, 0.25) !important;
+  background-color: #08120e !important;
+  color: var(--mt-gold) !important;
+  cursor: not-allowed !important;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+body .empty-tests,
+.student-dashboard .empty-tests,
+.empty-tests {
+  background-color: var(--mt-card-bg) !important;
+  background: var(--mt-card-bg) !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 16px !important;
+  padding: 48px 24px !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5) !important;
+  text-align: center !important;
+}
+
+body .empty-icon,
+.student-dashboard .empty-icon,
+.empty-icon {
+  width: 52px !important;
+  height: 52px !important;
+  margin: 0 auto 16px auto !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 12px !important;
+  background-color: var(--mt-card-inner) !important;
+  background: var(--mt-card-inner) !important;
+  color: var(--mt-gold) !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 20px !important;
+}
+
+.empty-eyebrow {
+  color: var(--mt-mint) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 8px !important;
+}
+
+body .empty-tests h2,
+.student-dashboard .empty-tests h2,
+.empty-tests h2 {
+  color: #ffffff !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  margin: 0 0 8px 0 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+body .empty-tests p,
+.student-dashboard .empty-tests p,
+.empty-tests p {
+  color: var(--mt-muted) !important;
+  font-size: 13px !important;
+  max-width: 480px !important;
+  margin: 0 auto 20px auto !important;
+  line-height: 1.5 !important;
+}
+
+body .reset-filter-button,
+.student-dashboard .reset-filter-button,
+.reset-filter-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 20px !important;
+  border: 1px solid rgba(215, 173, 88, 0.4) !important;
+  border-radius: 8px !important;
+  background-color: var(--mt-card-inner) !important;
+  background: var(--mt-card-inner) !important;
+  color: var(--mt-gold) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+body .reset-filter-button:hover,
+.reset-filter-button:hover {
+  background-color: var(--mt-gold) !important;
+  background: var(--mt-gold) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 15px rgba(215, 173, 88, 0.3) !important;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+body .my-tests-footer,
+.my-tests-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-top: 24px !important;
+  padding: 16px 20px !important;
+  border: 1px solid var(--mt-card-border) !important;
+  border-radius: 12px !important;
+  background: var(--mt-card-bg) !important;
+}
+
+.footer-security strong {
+  color: #ffffff !important;
+  font-size: 9px !important;
+}
+
+.footer-security span {
+  color: var(--mt-muted) !important;
+  font-size: 9px !important;
+}
+
+.footer-dot {
+  background: var(--mt-mint) !important;
+}
+
+body .back-dashboard-button,
+.back-dashboard-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 8px 14px !important;
+  border: 1px solid var(--mt-gold) !important;
+  border-radius: 8px !important;
+  background: var(--mt-card-inner) !important;
+  color: var(--mt-gold) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+body .back-dashboard-button:hover,
+.back-dashboard-button:hover {
+  background: var(--mt-gold) !important;
+  color: #000000 !important;
+}

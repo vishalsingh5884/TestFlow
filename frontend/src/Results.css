@@ -1,0 +1,436 @@
+/* =========================================================
+   SETTINGS-MATCHED THEME VARIABLES
+========================================================= */
+:root {
+  --sett-bg: #050b09;
+  --sett-card-bg: #0b1612;
+  --sett-card-inner: #08120e;
+  --sett-card-border: rgba(215, 173, 88, 0.35);
+  --sett-card-border-mint: rgba(35, 225, 160, 0.3);
+
+  --sett-gold: #d7ad58;
+  --sett-gold-soft: #f0d18c;
+  --sett-mint: #23e1a0;
+  --sett-mint-glow: rgba(35, 225, 160, 0.15);
+
+  --sett-white: #ffffff;
+  --sett-muted: #94a3b8;
+  --sett-muted-dark: #64748b;
+}
+
+/* Force dark page background */
+body .student-results-page,
+.student-dashboard .student-results-page,
+.student-results-page {
+  min-height: 100vh !important;
+  padding: 28px !important;
+  background: var(--sett-bg) !important;
+  color: var(--sett-white) !important;
+  font-family: Inter, system-ui, -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
+}
+
+.student-results-page * {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.student-results-header {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  margin-bottom: 24px !important;
+  padding: 20px 24px !important;
+  border: 1px solid var(--sett-card-border) !important;
+  border-radius: 12px !important;
+  background: var(--sett-card-bg) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.student-results-eyebrow {
+  color: var(--sett-mint) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 6px !important;
+}
+
+.student-results-header h1 {
+  margin: 0 0 4px 0 !important;
+  color: var(--sett-white) !important;
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.student-results-header p {
+  margin: 0 !important;
+  color: var(--sett-muted) !important;
+  font-size: 13px !important;
+}
+
+.results-back-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 9px 16px !important;
+  border: 1px solid var(--sett-gold) !important;
+  border-radius: 8px !important;
+  background: var(--sett-card-inner) !important;
+  color: var(--sett-gold) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.results-back-button:hover {
+  background: var(--sett-gold) !important;
+  color: #000000 !important;
+}
+
+/* =========================================================
+   HERO SCORE CARD (TOP MAIN CARD)
+========================================================= */
+
+body .result-hero-card,
+.student-dashboard .result-hero-card,
+section.result-hero-card,
+.result-hero-card {
+  margin-bottom: 20px !important;
+  padding: 24px 28px !important;
+  border: 1px solid var(--sett-card-border) !important;
+  border-radius: 14px !important;
+  background-color: var(--sett-card-bg) !important;
+  background: var(--sett-card-bg) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45) !important;
+}
+
+.result-hero-top {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid rgba(215, 173, 88, 0.15) !important;
+}
+
+.result-hero-top h2 {
+  margin: 0 0 4px 0 !important;
+  color: var(--sett-gold) !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+}
+
+.result-hero-top p {
+  margin: 0 !important;
+  color: var(--sett-muted) !important;
+  font-size: 12px !important;
+}
+
+.result-status.submitted {
+  display: inline-flex !important;
+  padding: 6px 14px !important;
+  border: 1px solid var(--sett-mint) !important;
+  border-radius: 20px !important;
+  background: var(--sett-mint-glow) !important;
+  color: var(--sett-mint) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+}
+
+/* Score Ring */
+.score-display {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+
+body .score-ring,
+.student-dashboard .score-ring,
+div.score-ring,
+.score-ring {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100px !important;
+  height: 100px !important;
+  flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  border: 3px solid var(--sett-mint) !important;
+  background-color: var(--sett-card-inner) !important;
+  background: var(--sett-card-inner) !important;
+  box-shadow: 0 0 25px rgba(35, 225, 160, 0.25) !important;
+}
+
+body .score-ring strong,
+.student-dashboard .score-ring strong,
+.score-ring strong,
+.score-ring strong * {
+  display: block !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  text-align: center !important;
+}
+
+body .score-ring span,
+.student-dashboard .score-ring span,
+.score-ring span,
+.score-ring span * {
+  display: block !important;
+  margin-top: 2px !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 0.9 !important;
+  font-size: 8px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-align: center !important;
+}
+
+.score-copy h3 {
+  margin: 0 0 4px 0 !important;
+  color: var(--sett-white) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+.score-copy p {
+  margin: 0 !important;
+  color: var(--sett-muted) !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+}
+
+/* =========================================================
+   GRID STATS (QUESTIONS, CORRECT, ANSWERED, SCORE)
+========================================================= */
+
+body .result-details-grid,
+.student-dashboard .result-details-grid,
+.result-details-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+  margin-bottom: 22px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Deep Emerald Background for Stat Cards */
+body .result-detail-card,
+.student-dashboard .result-detail-card,
+div.result-detail-card,
+.result-details-grid > div {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  padding: 20px !important;
+  border: 1px solid var(--sett-card-border) !important;
+  border-radius: 14px !important;
+  background-color: var(--sett-card-bg) !important;
+  background: var(--sett-card-bg) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Icons inside Stat Cards */
+.result-detail-card svg {
+  color: var(--sett-gold) !important;
+}
+
+/* Gold Header Labels */
+.result-detail-card span {
+  color: var(--sett-gold) !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+}
+
+/* Crisp Pure White Numbers */
+body .result-detail-card strong,
+.student-dashboard .result-detail-card strong,
+.result-detail-card strong,
+.result-detail-card strong * {
+  color: #ffffff !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* =========================================================
+   EXAMINATION INFORMATION & SUMMARY CARDS
+========================================================= */
+
+body .result-information-card,
+.student-dashboard .result-information-card,
+div.result-information-card,
+section.result-information-card,
+.result-information-card {
+  margin-bottom: 20px !important;
+  padding: 24px 28px !important;
+  border: 1px solid var(--sett-card-border) !important;
+  border-radius: 14px !important;
+  background-color: var(--sett-card-bg) !important;
+  background: var(--sett-card-bg) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45) !important;
+}
+
+.result-information-heading {
+  margin-bottom: 16px !important;
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid rgba(215, 173, 88, 0.15) !important;
+}
+
+.result-information-heading h3 {
+  margin: 0 !important;
+  color: var(--sett-gold) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+.result-information-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+}
+
+/* Dark Inner Field Pills */
+body .result-information-grid > div,
+.student-dashboard .result-information-grid > div,
+.result-information-grid > div {
+  padding: 14px 18px !important;
+  border: 1px solid rgba(215, 173, 88, 0.25) !important;
+  border-radius: 10px !important;
+  background-color: var(--sett-card-inner) !important;
+  background: var(--sett-card-inner) !important;
+}
+
+.result-information-grid span {
+  display: block !important;
+  margin-bottom: 4px !important;
+  color: var(--sett-gold) !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+body .result-information-grid strong,
+.student-dashboard .result-information-grid strong,
+.result-information-grid strong {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  word-break: break-all !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.results-empty {
+  margin-bottom: 20px !important;
+  padding: 40px 24px !important;
+  border: 1px solid var(--sett-card-border) !important;
+  border-radius: 14px !important;
+  background: var(--sett-card-bg) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45) !important;
+  text-align: center !important;
+}
+
+.results-empty-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  background: var(--sett-mint-glow) !important;
+  color: var(--sett-mint) !important;
+  margin-bottom: 12px !important;
+}
+
+.results-empty h2 {
+  color: var(--sett-white) !important;
+  margin: 0 0 6px 0 !important;
+  font-size: 18px !important;
+}
+
+.results-empty p {
+  color: var(--sett-muted) !important;
+  margin: 0 !important;
+  font-size: 12px !important;
+}
+
+/* =========================================================
+   ACTION BUTTONS & REFRESH BUTTON
+========================================================= */
+
+body .result-actions,
+.student-dashboard .result-actions,
+div.result-actions,
+.result-actions {
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin-bottom: 22px !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body .result-actions button.secondary,
+.student-dashboard .result-actions button.secondary,
+.result-actions button.secondary {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 20px !important;
+  border: 1px solid rgba(215, 173, 88, 0.35) !important;
+  border-radius: 10px !important;
+  background-color: var(--sett-card-bg) !important;
+  background: var(--sett-card-bg) !important;
+  color: var(--sett-gold) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+  transition: all 0.2s ease !important;
+}
+
+body .result-actions button.secondary:hover:not(:disabled) {
+  background-color: #12231e !important;
+  border-color: var(--sett-mint) !important;
+  color: #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+  .result-details-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .result-information-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .result-details-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

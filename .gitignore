@@ -1,0 +1,9 @@
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local application data
+backend/data/
+backend/*.json

@@ -1,0 +1,379 @@
+/* =========================================================
+   STUDENT EXISTING PAGE
+   Theme-aware:
+   Dark   = Green + Gold
+   Light  = White + Black + Orange + Red + Light Pink
+   System = Blue
+   ========================================================= */
+
+.student-existing-page {
+  --student-page-bg: #071411;
+  --student-page-surface: #0b211a;
+  --student-page-card: #0d2d24;
+  --student-page-text: #f4f7f5;
+  --student-page-muted: #8ea9a0;
+  --student-page-border: rgba(52, 211, 153, 0.16);
+  --student-page-primary: #00a878;
+  --student-page-primary-hover: #00c9a0;
+  --student-page-accent: #e7be68;
+  --student-page-danger: #dc2626;
+  --student-page-back-bg: rgba(0, 168, 120, 0.10);
+  --student-page-back-hover: rgba(0, 201, 160, 0.17);
+
+  min-height: 100vh;
+  width: 100%;
+
+  background: var(--student-page-bg);
+  color: var(--student-page-text);
+
+  position: relative;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   White + Black + Orange + Red + Light Pink
+   ========================================================= */
+
+.settings-light .student-existing-page,
+[data-theme="light"] .student-existing-page,
+.student-existing-page[data-theme="light"] {
+  --student-page-bg: #ffffff;
+  --student-page-surface: #fff7f8;
+  --student-page-card: #ffffff;
+  --student-page-text: #111111;
+  --student-page-muted: #6b7280;
+  --student-page-border: #e5e7eb;
+  --student-page-primary: #111111;
+  --student-page-primary-hover: #000000;
+  --student-page-accent: #f97316;
+  --student-page-danger: #dc2626;
+  --student-page-back-bg: #fff1f2;
+  --student-page-back-hover: #fce7f3;
+}
+
+
+/* =========================================================
+   SYSTEM / BLUE THEME
+   ========================================================= */
+
+.settings-system .student-existing-page,
+[data-theme="system"] .student-existing-page,
+.student-existing-page[data-theme="system"] {
+  --student-page-bg: #f8fafc;
+  --student-page-surface: #f1f5f9;
+  --student-page-card: #ffffff;
+  --student-page-text: #0f172a;
+  --student-page-muted: #64748b;
+  --student-page-border: #cbd5e1;
+  --student-page-primary: #2563eb;
+  --student-page-primary-hover: #1d4ed8;
+  --student-page-accent: #38bdf8;
+  --student-page-danger: #dc2626;
+  --student-page-back-bg: #eff6ff;
+  --student-page-back-hover: #dbeafe;
+}
+
+
+/* =========================================================
+   TOP BACK BAR
+   ========================================================= */
+
+.student-page-backbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  min-height: 72px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+  padding: 12px 28px;
+
+  box-sizing: border-box;
+
+  background: var(--student-page-surface);
+
+  border-bottom: 1px solid var(--student-page-border);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.12);
+
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.student-page-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  border: 1px solid var(--student-page-border);
+  border-radius: 10px;
+
+  background: var(--student-page-back-bg);
+
+  color: var(--student-page-text);
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* Back arrow/icon */
+
+.student-page-back-button span {
+  color: var(--student-page-primary);
+
+  font-size: 18px;
+  line-height: 1;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+/* Hover */
+
+.student-page-back-button:hover {
+  background: var(--student-page-back-hover);
+
+  border-color: var(--student-page-primary);
+
+  color: var(--student-page-text);
+
+  transform: translateX(-2px);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.10);
+}
+
+
+/* Dark theme hover */
+
+.student-existing-page .student-page-back-button:hover {
+  box-shadow:
+    0 8px 24px rgba(0, 168, 120, 0.12);
+}
+
+
+/* Light theme hover */
+
+.settings-light .student-existing-page .student-page-back-button:hover,
+[data-theme="light"] .student-existing-page .student-page-back-button:hover {
+  box-shadow:
+    0 8px 24px rgba(249, 115, 22, 0.12);
+}
+
+
+/* System theme hover */
+
+.settings-system .student-existing-page .student-page-back-button:hover,
+[data-theme="system"] .student-existing-page .student-page-back-button:hover {
+  box-shadow:
+    0 8px 24px rgba(37, 99, 235, 0.14);
+}
+
+
+/* Active */
+
+.student-page-back-button:active {
+  transform: translateX(0);
+}
+
+
+/* Keyboard focus */
+
+.student-page-back-button:focus-visible {
+  outline: 2px solid var(--student-page-accent);
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   PAGE TITLE
+   ========================================================= */
+
+.student-page-title {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-left: auto;
+}
+
+
+/* Small label */
+
+.student-page-title span {
+  color: var(--student-page-accent);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+
+  transition:
+    color 0.25s ease;
+}
+
+
+/* Main title */
+
+.student-page-title strong {
+  color: var(--student-page-text);
+
+  font-size: 17px;
+  font-weight: 800;
+
+  transition:
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   PAGE CONTENT
+   ========================================================= */
+
+.student-existing-page-content {
+  width: 100%;
+
+  min-height: calc(100vh - 72px);
+
+  box-sizing: border-box;
+
+  background: transparent;
+
+  color: var(--student-page-text);
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   COMMON THEME HELPERS
+   These help child content inherit the selected palette.
+   ========================================================= */
+
+.student-existing-page button {
+  font-family: inherit;
+}
+
+.student-existing-page input,
+.student-existing-page select,
+.student-existing-page textarea {
+  color: var(--student-page-text);
+}
+
+.student-existing-page ::selection {
+  background: var(--student-page-primary);
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .student-page-backbar {
+    min-height: 64px;
+
+    padding: 10px 16px;
+
+    gap: 12px;
+  }
+
+
+  .student-page-back-button {
+    min-height: 40px;
+
+    padding: 0 12px;
+
+    font-size: 13px;
+  }
+
+
+  .student-page-title {
+    gap: 7px;
+  }
+
+
+  .student-page-title span {
+    display: none;
+  }
+
+
+  .student-page-title strong {
+    font-size: 15px;
+  }
+
+
+  .student-existing-page-content {
+    min-height: calc(100vh - 64px);
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .student-page-backbar {
+    padding: 9px 12px;
+  }
+
+
+  .student-page-back-button {
+    padding: 0 10px;
+  }
+
+
+  .student-page-back-button span {
+    font-size: 16px;
+  }
+
+
+  .student-page-title strong {
+    font-size: 14px;
+  }
+}

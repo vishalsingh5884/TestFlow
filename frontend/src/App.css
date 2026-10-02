@@ -1,0 +1,912 @@
+/* =========================================================
+   TESTFLOW — STUDENT LOGIN
+   THEME: DARK EMERALD + WARM OFF-WHITE + CHAMPAGNE GOLD
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  overflow-x: hidden;
+
+  background: #041008;
+
+  color: #fff8eb;
+}
+
+
+/* =========================================================
+   COLOR SYSTEM
+========================================================= */
+
+:root {
+  /* Dark Emerald */
+  --green-950: #020b06;
+  --green-900: #041008;
+  --green-850: #06150b;
+  --green-800: #08200f;
+  --green-750: #0a2a15;
+  --green-700: #0d351b;
+  --green-650: #104321;
+  --green-600: #14552a;
+
+  /* Emerald accents */
+  --emerald: #1d8a4b;
+  --emerald-bright: #36b96c;
+  --emerald-soft: #56d88a;
+
+  /* Warm Off-White */
+  --cream: #fff8eb;
+  --cream-soft: #f8eedb;
+  --cream-muted: #d9ccb8;
+  --cream-dim: #b7aa96;
+
+  /* Champagne Gold */
+  --gold: #d7b56d;
+  --gold-bright: #f0d28a;
+  --gold-soft: #e7c987;
+  --gold-muted: #a98b51;
+
+  /* Borders */
+  --border-emerald: rgba(71, 194, 119, 0.28);
+  --border-gold: rgba(231, 201, 135, 0.38);
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.login-page {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(45, 150, 86, 0.12),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 15% 80%,
+      rgba(25, 125, 69, 0.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #020b06 0%,
+      #04150a 30%,
+      #08200f 62%,
+      #030c07 100%
+    );
+}
+
+
+/* =========================================================
+   EMERALD SKY / ATMOSPHERE
+========================================================= */
+
+.sky {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(51, 184, 105, 0.16),
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 85% 55%,
+      rgba(30, 125, 67, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 70%,
+      rgba(19, 100, 52, 0.11),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #020b06 0%,
+      #06170b 42%,
+      #0a2512 70%,
+      #041008 100%
+    );
+}
+
+
+/* =========================================================
+   EMERALD GRID PATTERN
+========================================================= */
+
+.sky::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(72, 184, 112, 0.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(72, 184, 112, 0.055) 1px,
+      transparent 1px
+    );
+
+  background-size: 70px 70px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.8) 20%,
+      rgba(0, 0, 0, 0.95) 75%,
+      transparent
+    );
+
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   SOFT EMERALD LIGHT
+========================================================= */
+
+.sky::after {
+  content: "";
+
+  position: absolute;
+
+  width: 650px;
+  height: 650px;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(42, 174, 94, 0.08),
+      rgba(42, 174, 94, 0.025) 40%,
+      transparent 70%
+    );
+
+  filter: blur(20px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MOON GLOW
+========================================================= */
+
+.moon-glow {
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  top: -120px;
+  right: 10%;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(231, 201, 135, 0.18),
+      rgba(215, 181, 109, 0.08) 40%,
+      transparent 72%
+    );
+
+  filter: blur(55px);
+
+  animation: moonGlow 5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   CHAMPAGNE MOON
+========================================================= */
+
+.moon {
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  top: 70px;
+  right: 15%;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #fffdf5,
+      #f5dfaa 46%,
+      #c8a762 100%
+    );
+
+  box-shadow:
+    0 0 30px rgba(244, 218, 157, 0.62),
+    0 0 80px rgba(215, 181, 109, 0.22),
+    0 0 120px rgba(50, 170, 92, 0.10);
+
+  animation: moonFloat 6s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   MOON CRATERS
+========================================================= */
+
+.moon-crater {
+  position: absolute;
+
+  border-radius: 50%;
+
+  background:
+    rgba(112, 86, 43, 0.14);
+
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.14);
+}
+
+.crater-one {
+  width: 25px;
+  height: 25px;
+
+  left: 30px;
+  top: 40px;
+}
+
+.crater-two {
+  width: 17px;
+  height: 17px;
+
+  right: 32px;
+  top: 65px;
+}
+
+.crater-three {
+  width: 30px;
+  height: 30px;
+
+  left: 65px;
+  bottom: 25px;
+}
+
+
+/* =========================================================
+   STARS
+========================================================= */
+
+.stars {
+  position: absolute;
+
+  inset: 0;
+}
+
+.stars span {
+  position: absolute;
+
+  width: 2px;
+  height: 2px;
+
+  border-radius: 50%;
+
+  background: var(--gold-soft);
+
+  box-shadow:
+    0 0 5px rgba(231, 201, 135, 0.72),
+    0 0 10px rgba(74, 192, 116, 0.20);
+
+  animation:
+    twinkle 2.5s ease-in-out infinite;
+}
+
+.stars span:nth-child(1) {
+  left: 4%;
+  top: 12%;
+}
+
+.stars span:nth-child(2) {
+  left: 9%;
+  top: 28%;
+}
+
+.stars span:nth-child(3) {
+  left: 14%;
+  top: 9%;
+}
+
+.stars span:nth-child(4) {
+  left: 18%;
+  top: 38%;
+}
+
+.stars span:nth-child(5) {
+  left: 23%;
+  top: 17%;
+}
+
+.stars span:nth-child(6) {
+  left: 28%;
+  top: 7%;
+}
+
+.stars span:nth-child(7) {
+  left: 32%;
+  top: 30%;
+}
+
+.stars span:nth-child(8) {
+  left: 37%;
+  top: 12%;
+}
+
+.stars span:nth-child(9) {
+  left: 42%;
+  top: 22%;
+}
+
+.stars span:nth-child(10) {
+  left: 47%;
+  top: 8%;
+}
+
+.stars span:nth-child(3n) {
+  animation-delay: 0.8s;
+}
+
+.stars span:nth-child(4n) {
+  width: 3px;
+  height: 3px;
+
+  animation-delay: 1.2s;
+}
+
+
+/* =========================================================
+   SHOOTING STARS
+========================================================= */
+
+.shooting-stars span {
+  position: absolute;
+
+  width: 100px;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(231, 201, 135, 0),
+      rgba(231, 201, 135, 0.95),
+      rgba(74, 192, 116, 0.75),
+      rgba(255, 248, 235, 0)
+    );
+
+  transform: rotate(-35deg);
+
+  opacity: 0;
+
+  filter:
+    drop-shadow(0 0 5px rgba(231, 201, 135, 0.35));
+
+  animation:
+    shootingStar 7s linear infinite;
+}
+
+.shooting-stars span:nth-child(1) {
+  top: 15%;
+  left: 20%;
+  animation-delay: 1s;
+}
+
+.shooting-stars span:nth-child(2) {
+  top: 23%;
+  left: 60%;
+  animation-delay: 3.5s;
+}
+
+.shooting-stars span:nth-child(3) {
+  top: 10%;
+  left: 78%;
+  animation-delay: 5s;
+}
+
+.shooting-stars span:nth-child(4) {
+  top: 35%;
+  left: 5%;
+  animation-delay: 7s;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card {
+  position: absolute;
+
+  z-index: 20;
+
+  top: 50%;
+  left: 50%;
+
+  width: min(
+    470px,
+    calc(100vw - 35px)
+  );
+
+  max-height: 88vh;
+
+  overflow-y: auto;
+
+  transform:
+    translate(-50%, -43%)
+    scale(0.85);
+
+  opacity: 0;
+
+  padding:
+    38px
+    42px
+    34px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(7, 35, 18, 0.96),
+      rgba(4, 19, 10, 0.94)
+    );
+
+  border:
+    1px solid var(--border-gold);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.62),
+    inset 0 0 35px rgba(50, 180, 96, 0.07),
+    inset 0 1px 0 rgba(255, 248, 235, 0.07),
+    0 0 45px rgba(36, 155, 79, 0.10);
+
+  backdrop-filter: blur(18px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+/* =========================================================
+   LOGIN CARD TOP ACCENT
+========================================================= */
+
+.login-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 12%;
+
+  width: 76%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(231, 201, 135, 0.80),
+      rgba(69, 190, 112, 0.70),
+      transparent
+    );
+
+  box-shadow:
+    0 0 12px rgba(231, 201, 135, 0.20);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   LOGIN CARD SIDE GLOW
+========================================================= */
+
+.login-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  top: -90px;
+  right: -90px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(231, 201, 135, 0.09),
+      transparent 70%
+    );
+
+  filter: blur(12px);
+
+  pointer-events: none;
+}
+
+.login-card.login-visible {
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+  position: relative;
+
+  width: 100%;
+  height: 56px;
+
+  border:
+    1px solid
+    rgba(76, 198, 123, 0.40);
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #082513,
+      #0d3a1d
+    );
+
+  color: var(--cream);
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON SHINE
+========================================================= */
+
+.login-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -100%;
+
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent,
+      rgba(255, 248, 235, 0.08),
+      transparent
+    );
+
+  transition:
+    left 0.6s ease;
+
+  pointer-events: none;
+}
+
+.login-button:hover::before {
+  left: 130%;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON HOVER
+========================================================= */
+
+.login-button:hover {
+  color: var(--gold-bright);
+
+  border-color:
+    rgba(231, 201, 135, 0.72);
+
+  background:
+    linear-gradient(
+      135deg,
+      #0a2d17,
+      #104a25
+    );
+
+  box-shadow:
+    0 0 25px rgba(61, 193, 111, 0.15),
+    0 0 35px rgba(231, 201, 135, 0.07),
+    inset 0 0 18px rgba(231, 201, 135, 0.04);
+
+  transform:
+    translateY(-2px);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON ACTIVE
+========================================================= */
+
+.login-button:active {
+  transform:
+    translateY(0)
+    scale(0.985);
+}
+
+
+/* =========================================================
+   LOGIN CARD SCROLLBAR
+========================================================= */
+
+.login-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.login-card::-webkit-scrollbar-track {
+  background: rgba(255, 248, 235, 0.03);
+  border-radius: 10px;
+}
+
+.login-card::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(67, 184, 109, 0.60),
+      rgba(215, 181, 109, 0.55)
+    );
+
+  border-radius: 10px;
+}
+
+.login-card::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(67, 184, 109, 0.85),
+      rgba(231, 201, 135, 0.80)
+    );
+}
+
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+========================================================= */
+
+.login-button:focus-visible {
+  outline: none;
+
+  border-color:
+    var(--gold-bright);
+
+  box-shadow:
+    0 0 0 3px
+      rgba(231, 201, 135, 0.12),
+    0 0 25px
+      rgba(62, 190, 108, 0.16);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes moonGlow {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes moonFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes shootingStar {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(0, 0)
+      rotate(-35deg);
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  15% {
+    opacity: 0;
+
+    transform:
+      translate(220px, 150px)
+      rotate(-35deg);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+  .moon-glow {
+    width: 320px;
+    height: 320px;
+
+    top: -80px;
+    right: -40px;
+  }
+
+  .moon {
+    width: 105px;
+    height: 105px;
+
+    top: 55px;
+    right: 8%;
+  }
+
+  .login-card {
+    width:
+      calc(100vw - 28px);
+
+    padding:
+      30px
+      24px
+      28px;
+
+    border-radius: 20px;
+  }
+
+  .sky::before {
+    background-size:
+      50px 50px;
+  }
+}
+
+
+@media (max-width: 430px) {
+  .login-card {
+    width:
+      calc(100vw - 20px);
+
+    padding:
+      26px
+      20px
+      24px;
+  }
+
+  .moon {
+    width: 82px;
+    height: 82px;
+
+    top: 42px;
+  }
+
+  .moon-glow {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .moon-glow,
+  .moon,
+  .stars span,
+  .shooting-stars span,
+  .login-card,
+  .login-button {
+    animation: none;
+    transition: none;
+  }
+}

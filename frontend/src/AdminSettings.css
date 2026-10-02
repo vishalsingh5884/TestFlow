@@ -1,0 +1,1742 @@
+/* =========================================================
+   TESTFLOW — ADMIN SETTINGS
+   ISOLATED ADMIN STYLES
+   DEEP MAROON • CREAM • GOLD
+========================================================= */
+
+.admin-settings-page {
+  width: 100%;
+  min-height: 100vh;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 92% 0%,
+      rgba(139, 38, 61, 0.18),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 4% 92%,
+      rgba(207, 161, 76, 0.07),
+      transparent 28%
+    ),
+    #10050b;
+
+  color: #f4ead8;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  overflow-x: hidden;
+}
+
+.admin-settings-page *,
+.admin-settings-page *::before,
+.admin-settings-page *::after {
+  box-sizing: border-box;
+}
+
+.admin-settings-inner {
+  width: 100%;
+  max-width: 1540px;
+
+  margin: 0 auto;
+
+  padding:
+    36px 42px 80px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.admin-settings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 28px;
+
+  margin-bottom: 28px;
+
+  animation:
+    adminSettingsFadeUp
+    0.5s
+    ease
+    both;
+}
+
+.admin-settings-header-content {
+  min-width: 0;
+}
+
+.admin-settings-eyebrow {
+  margin-bottom: 9px;
+
+  color: #d5a64f;
+
+  font-size: 10px;
+  font-weight: 850;
+
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+}
+
+.admin-settings-header h1 {
+  margin: 0;
+
+  color: #fff7e8;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(34px, 4vw, 50px);
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: -1.2px;
+}
+
+.admin-settings-header p {
+  margin:
+    11px 0 0;
+
+  color: #8e7880;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.admin-settings-header-actions {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+}
+
+.admin-settings-back-button {
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding:
+    0 17px;
+
+  border:
+    1px solid rgba(216, 172, 82, 0.18);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #d6c3a9;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.admin-settings-back-button span {
+  color: #d3a34e;
+
+  font-size: 14px;
+}
+
+.admin-settings-back-button:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(126, 35, 55, 0.18);
+
+  border-color:
+    rgba(218, 173, 82, 0.38);
+
+  color: #fff1d4;
+}
+
+
+/* =========================================================
+   NOTICES
+========================================================= */
+
+.admin-settings-notice {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+
+  padding:
+    12px 15px;
+
+  border-radius: 10px;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+.admin-settings-notice-icon {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.admin-settings-notice.success {
+  border:
+    1px solid rgba(92, 165, 108, 0.18);
+
+  background:
+    rgba(64, 134, 77, 0.08);
+
+  color: #9aca9f;
+}
+
+.admin-settings-notice.success
+  .admin-settings-notice-icon {
+  background:
+    rgba(87, 172, 103, 0.13);
+
+  color: #8fd09a;
+}
+
+.admin-settings-notice.error {
+  border:
+    1px solid rgba(190, 70, 73, 0.2);
+
+  background:
+    rgba(143, 38, 48, 0.1);
+
+  color: #dc9a91;
+}
+
+.admin-settings-notice.error
+  .admin-settings-notice-icon {
+  background:
+    rgba(183, 66, 67, 0.14);
+
+  color: #e19a91;
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.admin-settings-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.65fr)
+    minmax(300px, 0.7fr);
+
+  align-items: start;
+
+  gap: 22px;
+}
+
+.admin-settings-main {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.admin-settings-section {
+  position: relative;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(211, 166, 79, 0.15);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(43, 10, 18, 0.97),
+      rgba(21, 6, 12, 0.98)
+    );
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.24);
+
+  animation:
+    adminSettingsFadeUp
+    0.55s
+    ease
+    both;
+}
+
+.admin-settings-section:hover {
+  border-color:
+    rgba(211, 166, 79, 0.23);
+
+  box-shadow:
+    0 22px 55px rgba(0, 0, 0, 0.28);
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.admin-settings-section-header {
+  min-height: 96px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding:
+    20px 24px;
+
+  border-bottom:
+    1px solid rgba(255, 237, 211, 0.065);
+}
+
+.admin-settings-section-number {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid rgba(208, 164, 77, 0.18);
+
+  border-radius: 9px;
+
+  background:
+    rgba(174, 115, 39, 0.08);
+
+  color: #d1a455;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-settings-section-heading {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.admin-settings-section-heading h2 {
+  margin: 0;
+
+  color: #fff1dc;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 19px;
+
+  font-weight: 750;
+
+  line-height: 1.2;
+}
+
+.admin-settings-section-heading p {
+  margin:
+    6px 0 0;
+
+  color: #7e6871;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+.admin-settings-badge {
+  flex-shrink: 0;
+
+  padding:
+    6px 10px;
+
+  border:
+    1px solid rgba(207, 161, 74, 0.18);
+
+  border-radius: 20px;
+
+  background:
+    rgba(177, 117, 39, 0.08);
+
+  color: #d6aa58;
+
+  font-size: 8px;
+  font-weight: 850;
+
+  letter-spacing: 0.9px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   SECTION CONTENT
+========================================================= */
+
+.admin-settings-section-content {
+  padding:
+    24px;
+}
+
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+.admin-settings-fields {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 19px;
+}
+
+.admin-settings-fields-single {
+  max-width: 50%;
+}
+
+.admin-settings-field {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.admin-settings-field-label {
+  color: #b9a194;
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  letter-spacing: 0.15px;
+}
+
+.admin-settings-field input,
+.admin-settings-field select {
+  width: 100%;
+  min-height: 45px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid rgba(218, 178, 91, 0.13);
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background:
+    rgba(9, 3, 7, 0.7);
+
+  color: #f1e4d1;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-settings-field input::placeholder {
+  color: #5f4e55;
+}
+
+.admin-settings-field input:hover,
+.admin-settings-field select:hover {
+  border-color:
+    rgba(213, 169, 82, 0.25);
+}
+
+.admin-settings-field input:focus,
+.admin-settings-field select:focus {
+  border-color:
+    rgba(213, 168, 80, 0.48);
+
+  background:
+    rgba(17, 5, 10, 0.9);
+
+  box-shadow:
+    0 0 0 3px rgba(204, 158, 69, 0.07);
+}
+
+.admin-settings-field select {
+  cursor: pointer;
+}
+
+.admin-settings-field input:disabled,
+.admin-settings-field select:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+.admin-settings-field-help {
+  color: #604e57;
+
+  font-size: 8.5px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   TOGGLES
+========================================================= */
+
+.admin-settings-toggle-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  min-height: 76px;
+
+  padding:
+    15px 0;
+
+  border-bottom:
+    1px solid rgba(255, 236, 207, 0.055);
+}
+
+.admin-settings-toggle-row:first-child {
+  padding-top: 0;
+}
+
+.admin-settings-toggle-row:last-child {
+  padding-bottom: 0;
+
+  border-bottom: 0;
+}
+
+.admin-settings-toggle-copy {
+  min-width: 0;
+}
+
+.admin-settings-toggle-copy strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #e9decd;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.admin-settings-toggle-copy p {
+  max-width: 650px;
+
+  margin: 0;
+
+  color: #75626a;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.admin-settings-toggle {
+  position: relative;
+
+  width: 49px;
+  height: 27px;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 30px;
+
+  background:
+    #382029;
+
+  cursor: pointer;
+
+  transition:
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.admin-settings-toggle > span {
+  position: absolute;
+
+  top: 4px;
+  left: 4px;
+
+  width: 19px;
+  height: 19px;
+
+  border-radius: 50%;
+
+  background:
+    #a99a92;
+
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.4);
+
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease;
+}
+
+.admin-settings-toggle.active {
+  background:
+    linear-gradient(
+      135deg,
+      #79263e,
+      #b8843c
+    );
+
+  box-shadow:
+    0 0 18px rgba(191, 136, 56, 0.14);
+}
+
+.admin-settings-toggle.active > span {
+  transform:
+    translateX(22px);
+
+  background:
+    #fff3d8;
+}
+
+.admin-settings-toggle:hover {
+  box-shadow:
+    0 0 0 3px rgba(211, 166, 79, 0.06);
+}
+
+
+/* =========================================================
+   DANGER TOGGLE
+========================================================= */
+
+.admin-settings-toggle-danger
+  .admin-settings-toggle.active {
+  background:
+    linear-gradient(
+      135deg,
+      #8c293b,
+      #b84942
+    );
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.admin-settings-divider {
+  height: 1px;
+
+  margin:
+    22px 0;
+
+  background:
+    rgba(255, 237, 210, 0.06);
+}
+
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.admin-settings-warning {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 11px;
+
+  margin-top: 20px;
+
+  padding:
+    13px 14px;
+
+  border:
+    1px solid rgba(198, 91, 71, 0.18);
+
+  border-radius: 10px;
+
+  background:
+    rgba(154, 55, 46, 0.08);
+
+  color: #c98f82;
+}
+
+.admin-settings-warning > span {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    rgba(195, 87, 68, 0.12);
+
+  color: #d89989;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.admin-settings-warning strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #dca095;
+
+  font-size: 10px;
+}
+
+.admin-settings-warning p {
+  margin: 0;
+
+  color: #866b70;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   SAVE BAR
+========================================================= */
+
+.admin-settings-save-bar {
+  position: sticky;
+
+  bottom: 18px;
+
+  z-index: 20;
+
+  min-height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding:
+    11px 13px 11px 17px;
+
+  border:
+    1px solid rgba(211, 166, 80, 0.18);
+
+  border-radius: 13px;
+
+  background:
+    rgba(23, 6, 12, 0.94);
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.36);
+}
+
+.admin-settings-save-status {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  color: #8e7b78;
+
+  font-size: 9px;
+}
+
+.admin-settings-status-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    #75646a;
+}
+
+.admin-settings-status-dot.success {
+  background: #78be88;
+
+  box-shadow:
+    0 0 10px rgba(103, 189, 122, 0.25);
+}
+
+.admin-settings-status-dot.error {
+  background: #ca7770;
+
+  box-shadow:
+    0 0 10px rgba(197, 101, 93, 0.2);
+}
+
+.admin-settings-status-dot.saving {
+  background: #d3a34d;
+
+  animation:
+    adminSettingsPulse
+    1s
+    ease
+    infinite;
+}
+
+.admin-settings-save-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  flex-shrink: 0;
+}
+
+.admin-settings-reset-button,
+.admin-settings-save-button {
+  min-height: 40px;
+
+  padding:
+    0 16px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-settings-reset-button {
+  border:
+    1px solid rgba(192, 146, 69, 0.18);
+
+  background:
+    rgba(153, 99, 35, 0.08);
+
+  color: #c8a66a;
+}
+
+.admin-settings-reset-button:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    rgba(153, 99, 35, 0.16);
+
+  border-color:
+    rgba(211, 166, 80, 0.3);
+}
+
+.admin-settings-save-button {
+  border:
+    1px solid rgba(218, 172, 78, 0.32);
+
+  background:
+    linear-gradient(
+      135deg,
+      #7e263e,
+      #a97735
+    );
+
+  color: #fff7e7;
+
+  box-shadow:
+    0 8px 22px rgba(126, 38, 62, 0.2);
+}
+
+.admin-settings-save-button:hover {
+  transform:
+    translateY(-2px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #93304b,
+      #c18a3e
+    );
+
+  border-color:
+    rgba(230, 188, 101, 0.45);
+
+  box-shadow:
+    0 12px 28px rgba(144, 61, 65, 0.25);
+}
+
+.admin-settings-reset-button:disabled,
+.admin-settings-save-button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.admin-settings-sidebar {
+  min-width: 0;
+
+  position: sticky;
+
+  top: 22px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+
+/* =========================================================
+   SYSTEM INFO CARD
+========================================================= */
+
+.admin-settings-info-card {
+  overflow: hidden;
+
+  border:
+    1px solid rgba(208, 164, 77, 0.15);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(42, 10, 18, 0.97),
+      rgba(21, 6, 12, 0.98)
+    );
+
+  box-shadow:
+    0 17px 42px rgba(0, 0, 0, 0.22);
+}
+
+.admin-settings-info-header {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    20px;
+
+  border-bottom:
+    1px solid rgba(255, 235, 205, 0.06);
+}
+
+.admin-settings-info-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid rgba(209, 163, 73, 0.18);
+
+  border-radius: 9px;
+
+  background:
+    rgba(192, 141, 51, 0.08);
+
+  color: #d5a755;
+
+  font-size: 13px;
+}
+
+.admin-settings-info-header h3 {
+  margin: 0;
+
+  color: #f4e7d2;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 17px;
+}
+
+.admin-settings-info-header p {
+  margin:
+    5px 0 0;
+
+  color: #76626b;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+.admin-settings-info-body {
+  padding:
+    5px 20px 12px;
+}
+
+.admin-settings-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  min-height: 47px;
+
+  border-bottom:
+    1px solid rgba(255, 235, 205, 0.045);
+}
+
+.admin-settings-info-row:last-child {
+  border-bottom: 0;
+}
+
+.admin-settings-info-row > span {
+  color: #806b74;
+
+  font-size: 9px;
+}
+
+.admin-settings-info-row > strong {
+  color: #cfb58e;
+
+  font-size: 9px;
+
+  font-weight: 750;
+
+  text-align: right;
+}
+
+.admin-settings-info-row > strong.positive {
+  color: #91c49a;
+}
+
+.admin-settings-info-row > strong.negative {
+  color: #d79389;
+}
+
+
+/* =========================================================
+   CONNECTION
+========================================================= */
+
+.admin-settings-connection {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    13px 14px;
+
+  border:
+    1px solid rgba(93, 157, 103, 0.16);
+
+  border-radius: 11px;
+
+  background:
+    rgba(57, 119, 68, 0.07);
+}
+
+.admin-settings-connection-dot {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    #79c58b;
+
+  box-shadow:
+    0 0 0 4px rgba(102, 190, 117, 0.07),
+    0 0 14px rgba(102, 190, 117, 0.27);
+}
+
+.admin-settings-connection div {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.admin-settings-connection strong {
+  display: block;
+
+  color: #a4d0aa;
+
+  font-size: 9px;
+}
+
+.admin-settings-connection small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #637867;
+
+  font-size: 8px;
+}
+
+.admin-settings-online {
+  color: #79bd88;
+
+  font-size: 7px;
+
+  font-weight: 850;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   PLATFORM STATUS
+========================================================= */
+
+.admin-settings-status-card {
+  overflow: hidden;
+
+  border:
+    1px solid rgba(208, 164, 77, 0.12);
+
+  border-radius: 15px;
+
+  background:
+    rgba(34, 8, 15, 0.9);
+}
+
+.admin-settings-status-card-header {
+  padding:
+    15px 17px;
+
+  border-bottom:
+    1px solid rgba(255, 235, 205, 0.05);
+
+  color: #8f756c;
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  letter-spacing: 1.2px;
+}
+
+.admin-settings-platform-status {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding:
+    16px 17px;
+}
+
+.admin-settings-platform-icon {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-settings-platform-icon.active {
+  border:
+    1px solid rgba(96, 171, 109, 0.17);
+
+  background:
+    rgba(63, 139, 76, 0.09);
+
+  color: #8dc696;
+}
+
+.admin-settings-platform-icon.maintenance {
+  border:
+    1px solid rgba(191, 79, 69, 0.2);
+
+  background:
+    rgba(156, 50, 46, 0.1);
+
+  color: #d79084;
+}
+
+.admin-settings-platform-status strong {
+  display: block;
+
+  color: #e0d0bc;
+
+  font-size: 10px;
+}
+
+.admin-settings-platform-status small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #715d65;
+
+  font-size: 8px;
+
+  line-height: 1.45;
+}
+
+.admin-settings-status-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  border-top:
+    1px solid rgba(255, 235, 205, 0.05);
+}
+
+.admin-settings-status-grid > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  padding:
+    13px 15px;
+}
+
+.admin-settings-status-grid > div + div {
+  border-left:
+    1px solid rgba(255, 235, 205, 0.05);
+}
+
+.admin-settings-status-grid span {
+  color: #705c64;
+
+  font-size: 8px;
+}
+
+.admin-settings-status-grid strong {
+  color: #c9ae85;
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   HELP
+========================================================= */
+
+.admin-settings-help {
+  padding:
+    20px;
+
+  border:
+    1px solid rgba(208, 164, 77, 0.12);
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 35, 55, 0.15),
+      rgba(178, 126, 47, 0.055)
+    );
+}
+
+.admin-settings-help-icon {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border:
+    1px solid rgba(210, 164, 76, 0.15);
+
+  border-radius: 10px;
+
+  background:
+    rgba(196, 147, 58, 0.1);
+
+  color: #d9ad5b;
+
+  font-size: 14px;
+}
+
+.admin-settings-help h3 {
+  margin:
+    0 0 7px;
+
+  color: #eee1ce;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 15px;
+}
+
+.admin-settings-help p {
+  margin: 0;
+
+  color: #79656d;
+
+  font-size: 9px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.admin-settings-loading {
+  min-height: 75vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.admin-settings-spinner {
+  width: 42px;
+  height: 42px;
+
+  margin-bottom: 18px;
+
+  border:
+    3px solid rgba(206, 161, 75, 0.12);
+
+  border-top-color:
+    #c99b4b;
+
+  border-radius: 50%;
+
+  animation:
+    adminSettingsSpin
+    0.8s
+    linear
+    infinite;
+}
+
+.admin-settings-loading h2 {
+  margin:
+    0 0 7px;
+
+  color: #f1e5d2;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 20px;
+}
+
+.admin-settings-loading p {
+  margin: 0;
+
+  color: #77636c;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.admin-settings-page
+  button:focus-visible,
+.admin-settings-page
+  input:focus-visible,
+.admin-settings-page
+  select:focus-visible {
+  outline:
+    2px solid rgba(216, 171, 81, 0.5);
+
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes adminSettingsFadeUp {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+@keyframes adminSettingsSpin {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+@keyframes adminSettingsPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE — 1250px
+========================================================= */
+
+@media (max-width: 1250px) {
+  .admin-settings-inner {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .admin-settings-layout {
+    grid-template-columns:
+      minmax(0, 1.45fr)
+      minmax(280px, 0.75fr);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE — 1050px
+========================================================= */
+
+@media (max-width: 1050px) {
+  .admin-settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-settings-sidebar {
+    position: static;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-settings-info-card {
+    grid-column: 1;
+  }
+
+  .admin-settings-connection {
+    grid-column: 2;
+  }
+
+  .admin-settings-status-card {
+    grid-column: 1;
+  }
+
+  .admin-settings-help {
+    grid-column: 2;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE — 800px
+========================================================= */
+
+@media (max-width: 800px) {
+  .admin-settings-inner {
+    padding:
+      26px 20px 55px;
+  }
+
+  .admin-settings-header {
+    flex-direction: column;
+  }
+
+  .admin-settings-header-actions {
+    width: 100%;
+  }
+
+  .admin-settings-back-button {
+    width: 100%;
+  }
+
+  .admin-settings-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-settings-fields-single {
+    max-width: 100%;
+  }
+
+  .admin-settings-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-settings-info-card,
+  .admin-settings-connection,
+  .admin-settings-status-card,
+  .admin-settings-help {
+    grid-column: auto;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE — 620px
+========================================================= */
+
+@media (max-width: 620px) {
+  .admin-settings-inner {
+    padding:
+      20px 14px 35px;
+  }
+
+  .admin-settings-header {
+    margin-bottom: 22px;
+  }
+
+  .admin-settings-header h1 {
+    font-size: 36px;
+  }
+
+  .admin-settings-header p {
+    font-size: 11px;
+  }
+
+  .admin-settings-section-header {
+    align-items: flex-start;
+
+    padding:
+      18px;
+  }
+
+  .admin-settings-section-number {
+    width: 31px;
+    height: 31px;
+
+    font-size: 9px;
+  }
+
+  .admin-settings-section-heading h2 {
+    font-size: 17px;
+  }
+
+  .admin-settings-section-heading p {
+    font-size: 9px;
+  }
+
+  .admin-settings-badge {
+    display: none;
+  }
+
+  .admin-settings-section-content {
+    padding:
+      18px;
+  }
+
+  .admin-settings-toggle-row {
+    align-items: flex-start;
+
+    gap: 15px;
+
+    min-height: 0;
+
+    padding:
+      16px 0;
+  }
+
+  .admin-settings-toggle-copy p {
+    font-size: 9px;
+  }
+
+  .admin-settings-save-bar {
+    position: static;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+
+    padding: 13px;
+  }
+
+  .admin-settings-save-status {
+    justify-content: center;
+
+    text-align: center;
+  }
+
+  .admin-settings-save-actions {
+    width: 100%;
+  }
+
+  .admin-settings-reset-button,
+  .admin-settings-save-button {
+    flex: 1;
+  }
+
+  .admin-settings-info-header {
+    padding:
+      17px;
+  }
+
+  .admin-settings-info-body {
+    padding:
+      5px 17px 10px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-settings-page *,
+  .admin-settings-page *::before,
+  .admin-settings-page *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+}
