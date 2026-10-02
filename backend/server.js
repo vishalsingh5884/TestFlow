@@ -109,8 +109,6 @@ function sanitizeAdminSettings(settings) {
   };
 }
 
-await loadAdminSettingsFromDisk();
-
 /*
 ====================================================
 APP
@@ -5980,6 +5978,7 @@ app.use((error, req, res, next) => {
 });
 
 async function startServer(startHttpServer = true) {
+  await loadAdminSettingsFromDisk();
   /*
   ------------------------------------------------
   LOAD PERSISTENT TESTS FIRST
@@ -6149,6 +6148,7 @@ if (process.env.NETLIFY !== "true") {
   startServer();
 }
 export { app, startServer };
+
 
 
 

@@ -1,8 +1,23 @@
 process.env.NETLIFY = "true";
 
-const { app, startServer } = await import("../../backend/server.js");
-const serverless = (await import("serverless-http")).default;
+import { app, startServer } from "../../backend/server.js";
+import serverless from "serverless-http";
 
-await startServer(false);
+let initialized = false;
+let initializationPromise;
 
-export const handler = serverless(app);
+async function initialize() {
+  if (!initialized) {
+    if (!initializationPromise) {
+      initializationPromise = startServer(false).then(() => {
+        initialized = true;
+      });
+    }
+    await initializationPromise;
+  }
+}
+
+export const handler = async (event, context) => {
+  await initialize();
+  return serverless(app)(event, context);
+};
