@@ -18,7 +18,7 @@ PATH CONFIGURATION
 ====================================================
 */
 
-const __dirname = process.env.NETLIFY ? process.cwd() : path.dirname(new URL(".", import.meta.url).pathname);
+const __dirname = process.env.NETLIFY ? path.join(process.cwd(), "backend") : process.cwd();
 
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
@@ -6146,6 +6146,7 @@ if (process.env.NETLIFY !== "true") {
   startServer();
 }
 export { app, startServer };
+
 
 
 
