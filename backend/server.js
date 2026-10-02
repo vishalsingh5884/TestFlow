@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import nodemailer from "nodemailer";
 import { GoogleGenAI } from "@google/genai";
 import { registerCommunityRoutes } from "./communityFeature.js";
+import { readBlobJSON, writeBlobJSON } from "./netlifyBlobs.js";
 
 dotenv.config();
 
@@ -68,23 +69,30 @@ const DEFAULT_ADMIN_SETTINGS = {
 
 let adminSettings = { ...DEFAULT_ADMIN_SETTINGS };
 
-function loadAdminSettingsFromDisk() {
+async function loadAdminSettingsFromDisk() {
   try {
-    if (!fs.existsSync(ADMIN_SETTINGS_FILE)) {
-      fs.writeFileSync(ADMIN_SETTINGS_FILE, JSON.stringify(DEFAULT_ADMIN_SETTINGS, null, 2), "utf-8");
-      return;
-    }
-    const raw = fs.readFileSync(ADMIN_SETTINGS_FILE, "utf-8");
-    const parsed = raw.trim() ? JSON.parse(raw) : {};
-    adminSettings = { ...DEFAULT_ADMIN_SETTINGS, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+    const parsed = await readBlobJSON("admin-settings", {});
+
+    adminSettings = {
+      ...DEFAULT_ADMIN_SETTINGS,
+      ...(parsed && typeof parsed === "object" ? parsed : {}),
+    };
+
+    console.log("Admin settings loaded from Netlify Blobs.");
   } catch (error) {
-    console.error("❌ Failed to load admin settings:", error);
+    console.error("Failed to load admin settings from Netlify Blobs:", error);
     adminSettings = { ...DEFAULT_ADMIN_SETTINGS };
   }
 }
 
-function saveAdminSettingsToDisk() {
-  fs.writeFileSync(ADMIN_SETTINGS_FILE, JSON.stringify(adminSettings, null, 2), "utf-8");
+async function saveAdminSettingsToDisk() {
+  try {
+    await writeBlobJSON("admin-settings", adminSettings);
+    console.log("Admin settings saved to Netlify Blobs.");
+  } catch (error) {
+    console.error("Failed to save admin settings to Netlify Blobs:", error);
+    throw error;
+  }
 }
 
 function sanitizeAdminSettings(settings) {
@@ -101,7 +109,7 @@ function sanitizeAdminSettings(settings) {
   };
 }
 
-loadAdminSettingsFromDisk();
+await loadAdminSettingsFromDisk();
 
 /*
 ====================================================
@@ -156,7 +164,7 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    console.warn(`⚠️ CORS blocked origin: ${origin}`);
+    console.warn(`âš ï¸ CORS blocked origin: ${origin}`);
     return callback(null, false);
   },
   credentials: true,
@@ -257,7 +265,7 @@ async function generateGeminiContent(
   ) {
     try {
       console.log(
-        `🤖 Gemini request attempt ${
+        `ðŸ¤– Gemini request attempt ${
           attempt + 1
         }/${GEMINI_MAX_RETRIES + 1}`,
       );
@@ -269,14 +277,14 @@ async function generateGeminiContent(
           config,
         });
 
-      console.log("✅ Gemini response received.");
+      console.log("âœ… Gemini response received.");
 
       return response;
     } catch (error) {
       lastError = error;
 
       console.error(
-        `❌ Gemini attempt ${
+        `âŒ Gemini attempt ${
           attempt + 1
         } failed:`,
         error?.message || error,
@@ -297,7 +305,7 @@ async function generateGeminiContent(
         ];
 
       console.log(
-        `⏳ Gemini temporarily unavailable. Retrying in ${
+        `â³ Gemini temporarily unavailable. Retrying in ${
           delay / 1000
         } seconds...`,
       );
@@ -400,39 +408,39 @@ function serializeAdminAccount(admin) {
   };
 }
 
-function saveAdminAccountsToDisk() {
+async function saveAdminAccountsToDisk() {
   try {
     const records = [...adminAccounts.values()].map((admin) => ({
       ...admin,
       passwordHash: admin.passwordHash,
     }));
-    fs.writeFileSync(ADMIN_ACCOUNTS_FILE, JSON.stringify(records, null, 2), "utf-8");
+
+    await writeBlobJSON("admin-accounts", records);
+    console.log("Admin accounts saved to Netlify Blobs.");
   } catch (error) {
-    console.error("❌ Failed to save admins.json:", error);
+    console.error("Failed to save admin accounts to Netlify Blobs:", error);
+    throw error;
   }
 }
+
 
 async function initializeAdminAccounts() {
   try {
     let records = [];
 
-    if (fs.existsSync(ADMIN_ACCOUNTS_FILE)) {
-      const raw = fs.readFileSync(ADMIN_ACCOUNTS_FILE, "utf-8");
-      if (raw.trim()) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          records = parsed;
-        } else if (Array.isArray(parsed?.admins)) {
-          records = parsed.admins;
-        } else if (Array.isArray(parsed?.accounts)) {
-          records = parsed.accounts;
-        } else if (parsed && typeof parsed === "object") {
-          records = Object.entries(parsed).map(([id, value]) => ({
-            ...(value || {}),
-            id: value?.id || id,
-          }));
-        }
-      }
+    const parsed = await readBlobJSON("admin-accounts", []);
+
+    if (Array.isArray(parsed)) {
+      records = parsed;
+    } else if (Array.isArray(parsed?.admins)) {
+      records = parsed.admins;
+    } else if (Array.isArray(parsed?.accounts)) {
+      records = parsed.accounts;
+    } else if (parsed && typeof parsed === "object") {
+      records = Object.entries(parsed).map(([id, value]) => ({
+        ...(value || {}),
+        id: value?.id || id,
+      }));
     }
 
     adminAccounts.clear();
@@ -492,14 +500,14 @@ async function initializeAdminAccounts() {
       users.set(admin.id, admin);
     }
 
-    saveAdminAccountsToDisk();
+    saveAdminAccountsToDisk().catch((error) => console.error("Failed to persist admin accounts:", error));
 
-    console.log(`👮 Loaded ${adminAccounts.size} admin account(s) from ${ADMIN_ACCOUNTS_FILE}`);
+    console.log(`ðŸ‘® Loaded ${adminAccounts.size} admin account(s) from ${ADMIN_ACCOUNTS_FILE}`);
     console.log(
-      `📧 Admin emails: ${[...adminAccounts.values()].map((admin) => admin.email).join(", ")}`,
+      `ðŸ“§ Admin emails: ${[...adminAccounts.values()].map((admin) => admin.email).join(", ")}`,
     );
   } catch (error) {
-    console.error("❌ Failed to initialize admin accounts:", error);
+    console.error("âŒ Failed to initialize admin accounts:", error);
 
     const passwordHash = await bcrypt.hash(
       String(process.env.ADMIN_PASSWORD || "Admin@123"),
@@ -564,6 +572,143 @@ The actual reset token is NEVER stored.
 
 const passwordResetTokens = new Map();
 
+async function saveSessionsToDisk() {
+  try {
+    await writeBlobJSON("sessions", Object.fromEntries(sessions));
+    console.log("Sessions saved to Netlify Blobs.");
+  } catch (error) {
+    console.error("Failed to save sessions to Netlify Blobs:", error);
+    throw error;
+  }
+}
+
+async function loadSessionsFromDisk() {
+  try {
+    const parsedData = await readBlobJSON("sessions", {});
+    sessions.clear();
+
+    for (const [token, session] of Object.entries(parsedData || {})) {
+      if (!session || typeof session !== "object") continue;
+      if (!session.userId) continue;
+      sessions.set(token, session);
+    }
+
+    console.log(`Loaded ${sessions.size} session(s) from Netlify Blobs.`);
+  } catch (error) {
+    console.error("Failed to load sessions from Netlify Blobs:", error);
+    sessions.clear();
+  }
+}
+
+async function savePasswordResetTokensToDisk() {
+  try {
+    await writeBlobJSON(
+      "password-reset-tokens",
+      Object.fromEntries(passwordResetTokens),
+    );
+    console.log("Password reset tokens saved to Netlify Blobs.");
+  } catch (error) {
+    console.error(
+      "Failed to save password reset tokens to Netlify Blobs:",
+      error,
+    );
+    throw error;
+  }
+}
+
+function enableAuthPersistence() {
+  let sessionsLoaded = false;
+  let resetTokensLoaded = false;
+
+  const originalSessionSet = sessions.set.bind(sessions);
+  const originalSessionDelete = sessions.delete.bind(sessions);
+
+  sessions.set = function (key, value) {
+    const result = originalSessionSet(key, value);
+
+    if (sessionsLoaded) {
+      saveSessionsToDisk().catch((error) => {
+        console.error("Failed to persist session change:", error);
+      });
+    }
+
+    return result;
+  };
+
+  sessions.delete = function (key) {
+    const result = originalSessionDelete(key);
+
+    if (sessionsLoaded && result) {
+      saveSessionsToDisk().catch((error) => {
+        console.error("Failed to persist session deletion:", error);
+      });
+    }
+
+    return result;
+  };
+
+  const originalResetSet = passwordResetTokens.set.bind(passwordResetTokens);
+  const originalResetDelete = passwordResetTokens.delete.bind(passwordResetTokens);
+
+  passwordResetTokens.set = function (key, value) {
+    const result = originalResetSet(key, value);
+
+    if (resetTokensLoaded) {
+      savePasswordResetTokensToDisk().catch((error) => {
+        console.error("Failed to persist password reset token:", error);
+      });
+    }
+
+    return result;
+  };
+
+  passwordResetTokens.delete = function (key) {
+    const result = originalResetDelete(key);
+
+    if (resetTokensLoaded && result) {
+      savePasswordResetTokensToDisk().catch((error) => {
+        console.error("Failed to persist password reset token deletion:", error);
+      });
+    }
+
+    return result;
+  };
+
+  return {
+    markSessionsLoaded() {
+      sessionsLoaded = true;
+    },
+    markResetTokensLoaded() {
+      resetTokensLoaded = true;
+    },
+  };
+}
+
+async function loadPasswordResetTokensFromDisk() {
+  try {
+    const parsedData = await readBlobJSON("password-reset-tokens", {});
+    passwordResetTokens.clear();
+
+    for (const [tokenHash, resetRecord] of Object.entries(parsedData || {})) {
+      if (!resetRecord || typeof resetRecord !== "object") continue;
+      if (!resetRecord.userId) continue;
+      if (!resetRecord.expiresAt) continue;
+
+      passwordResetTokens.set(tokenHash, resetRecord);
+    }
+
+    console.log(
+      `Loaded ${passwordResetTokens.size} password reset token(s) from Netlify Blobs.`,
+    );
+  } catch (error) {
+    console.error(
+      "Failed to load password reset tokens from Netlify Blobs:",
+      error,
+    );
+    passwordResetTokens.clear();
+  }
+}
+
 /*
 ====================================================
 ADMIN NOTIFICATIONS
@@ -578,66 +723,26 @@ PERSISTENT TEST STORAGE
 ====================================================
 */
 
-function saveTestsToDisk() {
+async function saveTestsToDisk() {
   try {
-    const serializedTests =
-      Object.fromEntries(tests);
+    const serializedTests = Object.fromEntries(tests);
 
-    fs.writeFileSync(
-      TESTS_FILE,
-      JSON.stringify(
-        serializedTests,
-        null,
-        2,
-      ),
-      "utf-8",
-    );
+    await writeBlobJSON("tests", serializedTests);
 
-    console.log(
-      `💾 Tests saved to ${TESTS_FILE}`,
-    );
+    console.log("💾 Tests saved to Netlify Blobs.");
   } catch (error) {
-    console.error(
-      "❌ Failed to save tests:",
-      error,
-    );
+    console.error("❌ Failed to save tests to Netlify Blobs:", error);
+    throw error;
   }
 }
 
-function loadTestsFromDisk() {
+async function loadTestsFromDisk() {
   try {
-    if (!fs.existsSync(TESTS_FILE)) {
-      fs.writeFileSync(
-        TESTS_FILE,
-        "{}",
-        "utf-8",
-      );
-
-      console.log("📁 Created tests.json");
-
-      return;
-    }
-
-    const rawData =
-      fs.readFileSync(
-        TESTS_FILE,
-        "utf-8",
-      );
-
-    if (!rawData.trim()) {
-      return;
-    }
-
-    const parsedData =
-      JSON.parse(rawData);
+    const parsedData = await readBlobJSON("tests", {});
 
     tests.clear();
 
-    for (
-      const [paperId, test] of Object.entries(
-        parsedData,
-      )
-    ) {
+    for (const [paperId, test] of Object.entries(parsedData || {})) {
       if (
         !test ||
         typeof test !== "object" ||
@@ -651,22 +756,13 @@ function loadTestsFromDisk() {
         test.paperId = paperId;
       }
 
-      ensureTestOwner(test);
-
-      tests.set(
-        paperId,
-        test,
-      );
+      tests.set(paperId, test);
     }
 
-    console.log(
-      `📚 Loaded ${tests.size} test(s) from persistent storage.`,
-    );
+    console.log(`📚 Loaded ${tests.size} test(s) from Netlify Blobs.`);
   } catch (error) {
-    console.error(
-      "❌ Failed to load tests.json:",
-      error,
-    );
+    console.error("❌ Failed to load tests from Netlify Blobs:", error);
+    tests.clear();
   }
 }
 
@@ -694,7 +790,7 @@ function saveExamAttemptsToDisk() {
     );
   } catch (error) {
     console.error(
-      "❌ Failed to save exam attempts:",
+      "âŒ Failed to save exam attempts:",
       error,
     );
   }
@@ -714,7 +810,7 @@ function loadExamAttemptsFromDisk() {
       );
 
       console.log(
-        "📁 Created exam-attempts.json",
+        "ðŸ“ Created exam-attempts.json",
       );
 
       return;
@@ -745,7 +841,7 @@ function loadExamAttemptsFromDisk() {
         typeof attempt !== "object" ||
         Array.isArray(attempt)
       ) {
-        console.warn(`⚠️ Skipping invalid exam attempt record: ${attemptId}`);
+        console.warn(`âš ï¸ Skipping invalid exam attempt record: ${attemptId}`);
         continue;
       }
 
@@ -760,11 +856,11 @@ function loadExamAttemptsFromDisk() {
     }
 
     console.log(
-      `📝 Loaded ${examAttempts.size} exam attempt(s) from persistent storage.`,
+      `ðŸ“ Loaded ${examAttempts.size} exam attempt(s) from persistent storage.`,
     );
   } catch (error) {
     console.error(
-      "❌ Failed to load exam-attempts.json:",
+      "âŒ Failed to load exam-attempts.json:",
       error,
     );
   }
@@ -812,54 +908,63 @@ function mergeStudentSettings(existing = {}) {
   };
 }
 
-function saveStudentSettingsToDisk() {
+async function saveStudentSettingsToDisk() {
   try {
-    fs.writeFileSync(STUDENT_SETTINGS_FILE, JSON.stringify(Object.fromEntries(studentSettings), null, 2), "utf-8");
+    const serializedSettings = Object.fromEntries(studentSettings);
+    await writeBlobJSON("student-settings", serializedSettings);
+    console.log("Student settings saved to Netlify Blobs.");
   } catch (error) {
-    console.error("❌ Failed to save student settings:", error);
+    console.error("Failed to save student settings to Netlify Blobs:", error);
+    throw error;
   }
 }
 
-function loadStudentSettingsFromDisk() {
+async function loadStudentSettingsFromDisk() {
   try {
-    if (!fs.existsSync(STUDENT_SETTINGS_FILE)) {
-      fs.writeFileSync(STUDENT_SETTINGS_FILE, "{}", "utf-8");
-      return;
-    }
-    const rawData = fs.readFileSync(STUDENT_SETTINGS_FILE, "utf-8");
-    if (!rawData.trim()) return;
-    const parsedData = JSON.parse(rawData);
+    const parsedData = await readBlobJSON("student-settings", {});
+
     studentSettings.clear();
-    for (const [studentId, settings] of Object.entries(parsedData)) {
+
+    for (const [studentId, settings] of Object.entries(parsedData || {})) {
       studentSettings.set(studentId, mergeStudentSettings(settings));
     }
-    console.log(`⚙️ Loaded settings for ${studentSettings.size} student(s).`);
+
+    console.log(`Loaded settings for ${studentSettings.size} student(s) from Netlify Blobs.`);
   } catch (error) {
-    console.error("❌ Failed to load student settings:", error);
+    console.error("Failed to load student settings from Netlify Blobs:", error);
+    studentSettings.clear();
   }
 }
 
-function saveStudentIdCounterToDisk() {
+async function saveStudentIdCounterToDisk() {
   try {
-    fs.writeFileSync(STUDENT_ID_COUNTER_FILE, JSON.stringify({ nextStudentId }, null, 2), "utf-8");
+    await writeBlobJSON("student-id-counter", { nextStudentId });
+    console.log("Student ID counter saved to Netlify Blobs.");
   } catch (error) {
-    console.error("❌ Failed to save student ID counter:", error);
+    console.error("Failed to save Student ID counter to Netlify Blobs:", error);
+    throw error;
   }
 }
 
-function loadStudentIdCounterFromDisk() {
+async function loadStudentIdCounterFromDisk() {
   try {
-    if (!fs.existsSync(STUDENT_ID_COUNTER_FILE)) {
+    const parsedData = await readBlobJSON("student-id-counter", null);
+
+    if (!parsedData) {
       nextStudentId = 1001;
-      saveStudentIdCounterToDisk();
       return;
     }
-    const rawData = fs.readFileSync(STUDENT_ID_COUNTER_FILE, "utf-8");
-    if (!rawData.trim()) { nextStudentId = 1001; return; }
-    const parsedNextId = Number(JSON.parse(rawData)?.nextStudentId);
-    nextStudentId = Number.isInteger(parsedNextId) && parsedNextId >= 1001 ? parsedNextId : 1001;
+
+    const parsedNextId = Number(parsedData?.nextStudentId);
+
+    nextStudentId =
+      Number.isInteger(parsedNextId) && parsedNextId >= 1001
+        ? parsedNextId
+        : 1001;
+
+    console.log(`Next Student ID loaded: ${nextStudentId}`);
   } catch (error) {
-    console.error("❌ Failed to load student ID counter:", error);
+    console.error("Failed to load Student ID counter from Netlify Blobs:", error);
     nextStudentId = 1001;
   }
 }
@@ -869,7 +974,7 @@ function getStudentSettings(studentId) {
   const settings = mergeStudentSettings(studentSettings.get(key) || {});
   if (!studentSettings.has(key)) {
     studentSettings.set(key, settings);
-    saveStudentSettingsToDisk();
+    saveStudentSettingsToDisk().catch((error) => console.error("Failed to persist default student settings:", error));
   }
   return settings;
 }
@@ -902,7 +1007,7 @@ function generateStudentIdForUser(user) {
   user.studentId = generatedId;
 
   users.set(user.id, user);
-  saveStudentIdCounterToDisk();
+  saveStudentIdCounterToDisk().catch((error) => console.error("Failed to persist Student ID counter:", error));
 
   return generatedId;
 }
@@ -931,7 +1036,7 @@ STUDENT ACCOUNT PERSISTENCE
 ====================================================
 */
 
-function saveStudentsToDisk() {
+async function saveStudentsToDisk() {
   try {
     const persistedStudents = {};
 
@@ -941,92 +1046,78 @@ function saveStudentsToDisk() {
       persistedStudents[userId] = { ...user };
     }
 
-    fs.writeFileSync(
-      STUDENTS_FILE,
-      JSON.stringify(persistedStudents, null, 2),
-      "utf-8",
-    );
+    await writeBlobJSON("students", persistedStudents);
+    console.log("Student accounts saved to Netlify Blobs.");
   } catch (error) {
-    console.error("❌ Failed to save students:", error);
+    console.error("Failed to save students to Netlify Blobs:", error);
+    throw error;
   }
 }
 
-function loadStudentsFromDisk() {
+
+async function loadStudentsFromDisk() {
   try {
-    if (!fs.existsSync(STUDENTS_FILE)) {
-      fs.writeFileSync(STUDENTS_FILE, "{}", "utf-8");
-      return;
-    }
-
-    const rawData = fs.readFileSync(STUDENTS_FILE, "utf-8");
-    if (!rawData.trim()) return;
-
-    const parsedData = JSON.parse(rawData);
-    if (!parsedData || typeof parsedData !== "object") return;
-
-    // Remove the old built-in demo student from data created by previous versions.
-    // This ensures the first real registered student can receive Student ID 1001.
+    const parsedData = await readBlobJSON("students", {});
+    let maxExistingStudentId = 0;
     let studentsChanged = false;
-    if (parsedData["student-demo-001"]) {
-      delete parsedData["student-demo-001"];
-      studentsChanged = true;
-    }
 
-    let maxExistingStudentId = 1000;
+    for (const [userId, storedUser] of Object.entries(parsedData || {})) {
+      if (!storedUser || typeof storedUser !== "object") continue;
 
-    // Load valid students first and find the highest existing Student ID.
-    for (const [userId, user] of Object.entries(parsedData)) {
-      if (!user || user.role !== "student" || !user.email || !user.passwordHash) {
-        continue;
+      const user = { ...storedUser };
+
+      if (!user.id) {
+        user.id = userId;
+        studentsChanged = true;
       }
 
-      if (user.studentId) {
-        const numericStudentId = Number(user.studentId);
-
-        if (
-          Number.isInteger(numericStudentId) &&
-          numericStudentId >= 1001 &&
-          numericStudentId <= 9999
-        ) {
-          maxExistingStudentId = Math.max(
-            maxExistingStudentId,
-            numericStudentId,
-          );
-        }
+      if (user.role !== "student") {
+        user.role = "student";
+        studentsChanged = true;
       }
 
-      users.set(userId, user);
-    }
+      const numericStudentId = Number.parseInt(
+        String(user.studentId || "").replace(/\D/g, ""),
+        10,
+      );
 
-    // Existing IDs determine the next sequential ID. If there are no valid IDs,
-    // start the legacy repair sequence at 1001. Preserve a higher persisted
-    // counter so previously issued IDs are not reused.
-    const persistedNextStudentId = nextStudentId;
-    nextStudentId = maxExistingStudentId >= 1001
-      ? Math.max(maxExistingStudentId + 1, persistedNextStudentId, 1001)
-      : 1001;
+      if (Number.isInteger(numericStudentId) && numericStudentId >= 1001) {
+        maxExistingStudentId = Math.max(
+          maxExistingStudentId,
+          numericStudentId,
+        );
+      }
 
-    // Assign missing IDs sequentially and persist the repaired records.
-    for (const user of users.values()) {
-      if (user?.role !== "student" || user.studentId) continue;
-
-      user.studentId = formatStudentId(nextStudentId);
-      nextStudentId += 1;
       users.set(user.id, user);
-      studentsChanged = true;
+    }
+
+    if (maxExistingStudentId >= 1001) {
+      const persistedNextStudentId = nextStudentId;
+
+      nextStudentId = Math.max(
+        maxExistingStudentId + 1,
+        persistedNextStudentId,
+        1001,
+      );
+
+      if (nextStudentId !== persistedNextStudentId) {
+        await saveStudentIdCounterToDisk();
+      }
     }
 
     if (studentsChanged) {
-      saveStudentsToDisk();
+      await saveStudentsToDisk();
     }
 
-    saveStudentIdCounterToDisk();
+    const studentCount = [...users.values()].filter(
+      (user) => user?.role === "student",
+    ).length;
 
     console.log(
-      `👥 Loaded ${[...users.values()].filter((user) => user.role === "student").length} student account(s).`,
+      `Loaded ${studentCount} student account(s) from Netlify Blobs.`,
     );
   } catch (error) {
-    console.error("❌ Failed to load students.json:", error);
+    console.error("Failed to load students from Netlify Blobs:", error);
   }
 }
 
@@ -1082,11 +1173,11 @@ function initializeMailTransporter() {
     !SMTP_PASS
   ) {
     console.log(
-      "📧 SMTP not configured.",
+      "ðŸ“§ SMTP not configured.",
     );
 
     console.log(
-      "🧪 Password reset will run in development mode.",
+      "ðŸ§ª Password reset will run in development mode.",
     );
 
     return;
@@ -1116,17 +1207,17 @@ function initializeMailTransporter() {
       });
 
     console.log(
-      "📧 SMTP email service configured.",
+      "ðŸ“§ SMTP email service configured.",
     );
 
     if (SMTP_FROM) {
       console.log(
-        `📨 Password reset sender: ${SMTP_FROM}`,
+        `ðŸ“¨ Password reset sender: ${SMTP_FROM}`,
       );
     }
   } catch (error) {
     console.error(
-      "❌ Failed to initialize email transporter:",
+      "âŒ Failed to initialize email transporter:",
       error,
     );
 
@@ -1186,13 +1277,13 @@ async function sendPasswordResetEmail(
   if (!mailTransporter) {
     console.log("");
     console.log(
-      "🧪 DEVELOPMENT PASSWORD RESET",
+      "ðŸ§ª DEVELOPMENT PASSWORD RESET",
     );
     console.log(
-      `👤 Student: ${user.email}`,
+      `ðŸ‘¤ Student: ${user.email}`,
     );
     console.log(
-      `🔗 Reset URL: ${resetUrl}`,
+      `ðŸ”— Reset URL: ${resetUrl}`,
     );
     console.log("");
 
@@ -1335,7 +1426,7 @@ Online Class Test AI
   });
 
   console.log(
-    `📨 Password reset email sent to ${user.email}`,
+    `ðŸ“¨ Password reset email sent to ${user.email}`,
   );
 
   return {
@@ -1899,8 +1990,8 @@ app.post(
       );
 
       // Persist both the student record and the updated counter.
-      saveStudentsToDisk();
-      saveStudentIdCounterToDisk();
+      saveStudentsToDisk().catch((error) => console.error("Failed to persist students:", error));
+      await saveStudentIdCounterToDisk();
 
       res.status(201).json({
         success: true,
@@ -2284,7 +2375,7 @@ app.post(
           );
       } catch (emailError) {
         console.error(
-          "❌ Password reset email failed:",
+          "âŒ Password reset email failed:",
           emailError,
         );
 
@@ -2341,7 +2432,7 @@ app.post(
       }
 
       console.log(
-        `🔐 Password reset requested for ${user.email}`,
+        `ðŸ” Password reset requested for ${user.email}`,
       );
 
       res.json(
@@ -2526,7 +2617,7 @@ app.post(
       }
 
       console.log(
-        `🔑 Password successfully reset for ${user.email}`,
+        `ðŸ”‘ Password successfully reset for ${user.email}`,
       );
 
       res.json({
@@ -2628,7 +2719,7 @@ app.get("/api/student/settings", authenticateStudent, (req, res) => {
   }
 });
 
-app.put("/api/student/settings", authenticateStudent, (req, res) => {
+app.put("/api/student/settings", authenticateStudent, async (req, res) => {
   try {
     const validationError = validateStudentSettingsPayload(req.body || {});
     if (validationError) return res.status(400).json({ success: false, message: validationError });
@@ -2641,7 +2732,7 @@ app.put("/api/student/settings", authenticateStudent, (req, res) => {
       general: { ...current.general, ...(payload.general || {}) },
     });
     studentSettings.set(req.user.id, updated);
-    saveStudentSettingsToDisk();
+    await saveStudentSettingsToDisk();
     res.json({ success: true, message: "Settings saved successfully.", profile: sanitizeStudentProfile(req.user), settings: sanitizeStudentSettings(updated) });
   } catch (error) {
     console.error("Update student settings error:", error);
@@ -2649,11 +2740,11 @@ app.put("/api/student/settings", authenticateStudent, (req, res) => {
   }
 });
 
-app.post("/api/student/settings/reset", authenticateStudent, (req, res) => {
+app.post("/api/student/settings/reset", authenticateStudent, async (req, res) => {
   try {
     const settings = cloneDefaultStudentSettings();
     studentSettings.set(req.user.id, settings);
-    saveStudentSettingsToDisk();
+    await saveStudentSettingsToDisk();
     res.json({ success: true, message: "Settings restored to default values.", settings });
   } catch (error) {
     console.error("Reset student settings error:", error);
@@ -2942,7 +3033,7 @@ For Coding questions:
 `;
 
       console.log(
-        `🤖 Generating test ${paperId} with Gemini...`,
+        `ðŸ¤– Generating test ${paperId} with Gemini...`,
       );
 
       const response =
@@ -3126,10 +3217,10 @@ For Coding questions:
         test,
       );
 
-      saveTestsToDisk();
+      await saveTestsToDisk();
 
       console.log(
-        `✅ Test ${paperId} generated successfully`,
+        `âœ… Test ${paperId} generated successfully`,
       );
 
       res.json({
@@ -3222,9 +3313,7 @@ ADMIN UPDATE TEST
 ====================================================
 */
 
-app.put(
-  "/api/admin/tests/:paperId",
-  (req, res) => {
+app.put("/api/admin/tests/:paperId", async (req, res) => {
     try {
       const paperId =
         normalizePaperId(
@@ -3349,7 +3438,7 @@ app.put(
         test,
       );
 
-      saveTestsToDisk();
+      await saveTestsToDisk();
 
       res.json({
         success: true,
@@ -3381,9 +3470,7 @@ ADMIN SYNC TEST FROM FRONTEND
 ====================================================
 */
 
-app.put(
-  "/api/admin/tests/:paperId/sync",
-  (req, res) => {
+app.put("/api/admin/tests/:paperId/sync", async (req, res) => {
     try {
       const paperId =
         normalizePaperId(
@@ -3522,7 +3609,7 @@ app.put(
         syncedTest,
       );
 
-      saveTestsToDisk();
+      await saveTestsToDisk();
 
       res.json({
         success: true,
@@ -3551,9 +3638,7 @@ DELETE DRAFT TEST
 ====================================================
 */
 
-app.delete(
-  "/api/admin/tests/:paperId",
-  (req, res) => {
+app.delete("/api/admin/tests/:paperId", async (req, res) => {
     try {
       const paperId = normalizePaperId(req.params.paperId);
       const test = tests.get(paperId);
@@ -3582,7 +3667,7 @@ app.delete(
       }
 
       tests.delete(paperId);
-      saveTestsToDisk();
+      await saveTestsToDisk();
 
       return res.json({
         success: true,
@@ -3606,8 +3691,7 @@ PUBLISH TEST
 */
 
 app.post(
-  "/api/admin/tests/:paperId/publish",
-  (req, res) => {
+  "/api/admin/tests/:paperId/publish", async (req, res) => {
     const paperId =
       normalizePaperId(
         req.params.paperId,
@@ -3712,7 +3796,7 @@ app.post(
       test,
     );
 
-    saveTestsToDisk();
+    await saveTestsToDisk();
 
     community.createNotificationForAllStudents({
       type: "TEST",
@@ -3722,7 +3806,7 @@ app.post(
     });
 
     console.log(
-      `📢 Test ${paperId} published`,
+      `ðŸ“¢ Test ${paperId} published`,
     );
 
     res.json({
@@ -3748,15 +3832,15 @@ app.get(
   (req, res) => {
     const paperId = normalizePaperId(req.params.paperId);
 
-    console.log(`🎓 Student requested Paper ID: ${paperId}`);
+    console.log(`ðŸŽ“ Student requested Paper ID: ${paperId}`);
     console.log(
-      `📑 Available tests: ${[...tests.keys()].join(", ")}`
+      `ðŸ“‘ Available tests: ${[...tests.keys()].join(", ")}`
     );
 
     const test = tests.get(paperId);
 
     if (!test) {
-      console.warn(`❌ Paper ID ${paperId} was not found.`);
+      console.warn(`âŒ Paper ID ${paperId} was not found.`);
       return res.status(404).json({
         success: false,
         message: "Invalid Paper ID.",
@@ -3790,7 +3874,7 @@ app.get(
 
     const studentTest = createStudentSafeTest(test);
 
-    console.log(`✅ Student test ${paperId} returned successfully.`);
+    console.log(`âœ… Student test ${paperId} returned successfully.`);
 
     res.json({
       success: true,
@@ -4020,7 +4104,7 @@ START EXAM
 app.post(
   "/api/student/tests/:paperId/start",
   authenticateStudent,
-  (req, res) => {
+  async (req, res) => {
     try {
       const paperId =
         normalizePaperId(
@@ -4152,10 +4236,10 @@ app.post(
         attempt,
       );
 
-      saveExamAttemptsToDisk();
+      await saveExamAttemptsToDisk();
 
       console.log(
-        `📝 Exam started | Student: ${req.user.name} | Paper: ${paperId} | Attempt: ${attemptId}`,
+        `ðŸ“ Exam started | Student: ${req.user.name} | Paper: ${paperId} | Attempt: ${attemptId}`,
       );
 
       res.status(201).json({
@@ -4197,7 +4281,7 @@ FULLSCREEN VIOLATION
 app.post(
   "/api/student/tests/:paperId/violation",
   authenticateStudent,
-  (req, res) => {
+  async (req, res) => {
     try {
       const paperId =
         normalizePaperId(
@@ -4310,7 +4394,7 @@ app.post(
         attempt,
       );
 
-      saveExamAttemptsToDisk();
+      await saveExamAttemptsToDisk();
 
       const notification = {
         id:
@@ -4361,35 +4445,35 @@ app.post(
       );
 
       console.warn(
-        "🚨 EXAMINATION RULE VIOLATION",
+        "ðŸš¨ EXAMINATION RULE VIOLATION",
       );
 
       console.warn(
-        `🚨 Student: ${req.user.name}`,
+        `ðŸš¨ Student: ${req.user.name}`,
       );
 
       console.warn(
-        `🚨 Email: ${req.user.email}`,
+        `ðŸš¨ Email: ${req.user.email}`,
       );
 
       console.warn(
-        `🚨 Paper ID: ${paperId}`,
+        `ðŸš¨ Paper ID: ${paperId}`,
       );
 
       console.warn(
-        `🚨 Attempt ID: ${attemptId}`,
+        `ðŸš¨ Attempt ID: ${attemptId}`,
       );
 
       console.warn(
-        `🚨 Violation: ${finalViolationType}`,
+        `ðŸš¨ Violation: ${finalViolationType}`,
       );
 
       console.warn(
-        `🚨 Time: ${timestamp}`,
+        `ðŸš¨ Time: ${timestamp}`,
       );
 
       console.warn(
-        "🚨 Exam TERMINATED and FLAGGED.",
+        "ðŸš¨ Exam TERMINATED and FLAGGED.",
       );
 
       res.json({
@@ -4513,7 +4597,7 @@ SUBMIT TEST
 app.post(
   "/api/student/tests/:paperId/submit",
   authenticateStudent,
-  (req, res) => {
+  async (req, res) => {
     try {
       const paperId =
         normalizePaperId(
@@ -4738,7 +4822,7 @@ app.post(
         attempt,
       );
 
-      saveExamAttemptsToDisk();
+      await saveExamAttemptsToDisk();
 
       community.createNotification(req.user.id, {
         type: "RESULT",
@@ -4748,7 +4832,7 @@ app.post(
       });
 
       console.log(
-        `✅ Exam submitted | Student: ${req.user.name} | Paper: ${paperId} | Score: ${score}`,
+        `âœ… Exam submitted | Student: ${req.user.name} | Paper: ${paperId} | Score: ${score}`,
       );
 
       res.json({
@@ -5428,7 +5512,7 @@ app.patch("/api/admin/students/:studentId/status", (req, res) => {
     }
 
     users.set(student.id, student);
-    saveStudentsToDisk();
+    saveStudentsToDisk().catch((error) => console.error("Failed to persist students:", error));
 
     res.json({
       success: true,
@@ -5459,7 +5543,7 @@ app.delete("/api/admin/students/:studentId", (req, res) => {
     }
 
     users.delete(student.id);
-    saveStudentsToDisk();
+    saveStudentsToDisk().catch((error) => console.error("Failed to persist students:", error));
 
     // Examination attempts are intentionally retained as historical records.
     res.json({
@@ -5587,13 +5671,13 @@ app.post("/api/admin/admins", async (req, res) => {
     users.set(admin.id, admin);
 
     // Persist immediately so the account survives a server restart.
-    saveAdminAccountsToDisk();
+    saveAdminAccountsToDisk().catch((error) => console.error("Failed to persist admin accounts:", error));
 
     console.log(
-      `👤 Created admin account: ${admin.name} <${admin.email}> (${admin.id})`,
+      `ðŸ‘¤ Created admin account: ${admin.name} <${admin.email}> (${admin.id})`,
     );
     console.log(
-      `👮 Admin accounts currently loaded: ${adminAccounts.size}`,
+      `ðŸ‘® Admin accounts currently loaded: ${adminAccounts.size}`,
     );
 
     return res.status(201).json({
@@ -5646,7 +5730,7 @@ app.delete("/api/admin/admins/:adminId", (req, res) => {
 
   adminAccounts.delete(target.id);
   users.delete(target.id);
-  saveAdminAccountsToDisk();
+  saveAdminAccountsToDisk().catch((error) => console.error("Failed to persist admin accounts:", error));
 
   return res.json({
     success: true,
@@ -5706,8 +5790,8 @@ app.put("/api/admin/settings", (req, res) => {
     users.set(req.user.id, req.user);
 
     adminSettings = next;
-    saveAdminSettingsToDisk();
-    saveAdminAccountsToDisk();
+    saveAdminSettingsToDisk().catch((error) => console.error("Failed to persist admin settings:", error));
+    saveAdminAccountsToDisk().catch((error) => console.error("Failed to persist admin accounts:", error));
 
     res.json({
       success: true,
@@ -5728,7 +5812,7 @@ app.put("/api/admin/settings", (req, res) => {
 app.post("/api/admin/settings/reset", (req, res) => {
   try {
     adminSettings = { ...DEFAULT_ADMIN_SETTINGS };
-    saveAdminSettingsToDisk();
+    saveAdminSettingsToDisk().catch((error) => console.error("Failed to persist admin settings:", error));
 
     res.json({
       success: true,
@@ -5762,7 +5846,7 @@ app.get("/api/admin/results", (req, res) => {
   }
 });
 
-app.put("/api/admin/tests/:paperId/questions/:questionId", (req, res) => {
+app.put("/api/admin/tests/:paperId/questions/:questionId", async (req, res) => {
   try {
     const paperId = normalizePaperId(req.params.paperId);
     const questionId = String(req.params.questionId || "").trim();
@@ -5831,7 +5915,7 @@ app.put("/api/admin/tests/:paperId/questions/:questionId", (req, res) => {
     test.questions[index] = updatedQuestion;
     test.updatedAt = new Date().toISOString();
     tests.set(paperId, test);
-    saveTestsToDisk();
+    await saveTestsToDisk();
 
     return res.json({ success: true, message: "Question updated successfully.", question: updatedQuestion, test });
   } catch (error) {
@@ -5879,7 +5963,7 @@ app.use((req, res) => {
 
 app.use((error, req, res, next) => {
   console.error(
-    `❌ Unhandled server error | ${req.method} ${req.originalUrl}:`,
+    `âŒ Unhandled server error | ${req.method} ${req.originalUrl}:`,
     error,
   );
 
@@ -5895,7 +5979,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-async function startServer() {
+async function startServer(startHttpServer = true) {
   /*
   ------------------------------------------------
   LOAD PERSISTENT TESTS FIRST
@@ -5904,17 +5988,25 @@ async function startServer() {
 
   await initializeAdminAccounts();
 
-  loadTestsFromDisk();
-  loadExamAttemptsFromDisk();
+  await loadTestsFromDisk();
+  await loadExamAttemptsFromDisk();
 
   // Load the persisted counter before assigning IDs to legacy students.
-  loadStudentIdCounterFromDisk();
-  loadStudentsFromDisk();
+  await loadStudentIdCounterFromDisk();
+  await loadStudentsFromDisk();
 
-  loadStudentSettingsFromDisk();
+  await loadStudentSettingsFromDisk();
+  await loadSessionsFromDisk();
+  await loadPasswordResetTokensFromDisk();
+  await community.loadCommunityData();
+
+  const authPersistence = enableAuthPersistence();
+  authPersistence.markSessionsLoaded();
+  authPersistence.markResetTokensLoaded();
 
   initializeMailTransporter();
 
+  if (!startHttpServer) return app;
 
   app.listen(
     PORT,
@@ -5927,23 +6019,23 @@ async function startServer() {
       );
 
       console.log(
-        "🚀 Online Class Test AI Backend",
+        "ðŸš€ Online Class Test AI Backend",
       );
 
       console.log(
-        `📡 Server: http://${HOST}:${PORT}`,
+        `ðŸ“¡ Server: http://${HOST}:${PORT}`,
       );
 
       console.log(
-        `🌐 Frontend origin: ${configuredFrontendOrigin || "not set"}`,
+        `ðŸŒ Frontend origin: ${configuredFrontendOrigin || "not set"}`,
       );
 
       console.log(
-        `📁 Data directory: ${DATA_DIR}`,
+        `ðŸ“ Data directory: ${DATA_DIR}`,
       );
 
       console.log(
-        `🤖 Gemini AI: ${
+        `ðŸ¤– Gemini AI: ${
           process.env.GEMINI_API_KEY
             ? "Configured"
             : "Not Configured"
@@ -5951,67 +6043,67 @@ async function startServer() {
       );
 
       console.log(
-        `🧠 Gemini Model: ${GEMINI_MODEL}`,
+        `ðŸ§  Gemini Model: ${GEMINI_MODEL}`,
       );
 
       console.log(
-        "🔐 Student authentication: ENABLED",
+        "ðŸ” Student authentication: ENABLED",
       );
 
       console.log(
-        "🛡️ Student answer protection: ENABLED",
+        "ðŸ›¡ï¸ Student answer protection: ENABLED",
       );
 
       console.log(
-        "🔄 Gemini retry protection: ENABLED",
+        "ðŸ”„ Gemini retry protection: ENABLED",
       );
 
       console.log(
-        "✏️ Admin test editing: ENABLED",
+        "âœï¸ Admin test editing: ENABLED",
       );
 
       console.log(
-        "💾 Draft saving: ENABLED",
+        "ðŸ’¾ Draft saving: ENABLED",
       );
 
       console.log(
-        "💿 Persistent JSON storage: ENABLED",
+        "ðŸ’¿ Persistent JSON storage: ENABLED",
       );
 
       console.log(
-        `👥 Student database: ${STUDENTS_FILE}`,
+        `ðŸ‘¥ Student database: ${STUDENTS_FILE}`,
       );
 
       console.log(
-        `📁 Test database: ${TESTS_FILE}`,
+        `ðŸ“ Test database: ${TESTS_FILE}`,
       );
 
       console.log(
-        "🖥️ Fullscreen exam enforcement: ENABLED",
+        "ðŸ–¥ï¸ Fullscreen exam enforcement: ENABLED",
       );
 
       console.log(
-        "🚨 Exam violation detection: ENABLED",
+        "ðŸš¨ Exam violation detection: ENABLED",
       );
 
       console.log(
-        "🔔 Admin violation notifications: ENABLED",
+        "ðŸ”” Admin violation notifications: ENABLED",
       );
 
       console.log(
-        "🔑 Forgot password: ENABLED",
+        "ðŸ”‘ Forgot password: ENABLED",
       );
 
       console.log(
-        "♻️ Password reset: ENABLED",
+        "â™»ï¸ Password reset: ENABLED",
       );
 
       console.log(
-        "⏱️ Reset token expiry: 15 minutes",
+        "â±ï¸ Reset token expiry: 15 minutes",
       );
 
       console.log(
-        `📧 Password reset email: ${
+        `ðŸ“§ Password reset email: ${
           mailTransporter
             ? "CONFIGURED"
             : "DEVELOPMENT MODE"
@@ -6019,19 +6111,19 @@ async function startServer() {
       );
 
       console.log(
-        "⚙️ Student settings: ENABLED",
+        "âš™ï¸ Student settings: ENABLED",
       );
 
       console.log(
-        "🆔 Student ID generation: ENABLED (first real student starts at 1001)",
+        "ðŸ†” Student ID generation: ENABLED (first real student starts at 1001)",
       );
 
       console.log(
-        `🆔 Next Student ID: ${nextStudentId}`,
+        `ðŸ†” Next Student ID: ${nextStudentId}`,
       );
 
       console.log(
-        `📚 Tests loaded: ${tests.size}`,
+        `ðŸ“š Tests loaded: ${tests.size}`,
       );
 
       console.log(
@@ -6044,13 +6136,26 @@ async function startServer() {
 }
 
 process.on("SIGTERM", () => {
-  console.log("🛑 SIGTERM received. Shutting down gracefully.");
+  console.log("ðŸ›‘ SIGTERM received. Shutting down gracefully.");
   process.exit(0);
 });
 
 process.on("SIGINT", () => {
-  console.log("🛑 SIGINT received. Shutting down gracefully.");
+  console.log("ðŸ›‘ SIGINT received. Shutting down gracefully.");
   process.exit(0);
 });
 
-startServer();
+if (process.env.NETLIFY !== "true") {
+  startServer();
+}
+export { app, startServer };
+
+
+
+
+
+
+
+
+
+

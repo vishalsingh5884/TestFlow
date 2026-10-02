@@ -21,3 +21,6 @@ __pycache__/
 *.zip
 *.backup
 *.before-create-test
+node_modules/
+.netlify/
+frontend/dist/

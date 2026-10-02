@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import { readBlobJSON, writeBlobJSON } from "./netlifyBlobs.js";
+
 import crypto from "crypto";
 
 export function registerCommunityRoutes({
@@ -11,44 +11,75 @@ export function registerCommunityRoutes({
   authenticateAdmin,
   authenticateStudent,
 }) {
-  const GROUPS_FILE = path.join(DATA_DIR, "groups.json");
-  const GROUP_MESSAGES_FILE = path.join(DATA_DIR, "group-messages.json");
-  const GROUP_INVITES_FILE = path.join(DATA_DIR, "group-invites.json");
-  const NOTIFICATIONS_FILE = path.join(DATA_DIR, "notifications.json");
-  const PRIVATE_MESSAGES_FILE = path.join(DATA_DIR, "private-messages.json");
+  const COMMUNITY_KEYS = {
+    groups: "community-groups",
+    groupMessages: "community-group-messages",
+    groupInvites: "community-group-invites",
+    notifications: "community-notifications",
+    privateMessages: "community-private-messages",
+  };
 
-  const readArray = (file) => {
+  let groups = [];
+  let groupMessages = [];
+  let groupInvites = [];
+  let notifications = [];
+  let privateMessages = [];
+
+  const loadCommunityData = async () => {
     try {
-      if (!fs.existsSync(file)) {
-        fs.writeFileSync(file, "[]", "utf-8");
-        return [];
-      }
-      const raw = fs.readFileSync(file, "utf-8");
-      if (!raw.trim()) return [];
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
+      const [
+        storedGroups,
+        storedGroupMessages,
+        storedGroupInvites,
+        storedNotifications,
+        storedPrivateMessages,
+      ] = await Promise.all([
+        readBlobJSON(COMMUNITY_KEYS.groups, []),
+        readBlobJSON(COMMUNITY_KEYS.groupMessages, []),
+        readBlobJSON(COMMUNITY_KEYS.groupInvites, []),
+        readBlobJSON(COMMUNITY_KEYS.notifications, []),
+        readBlobJSON(COMMUNITY_KEYS.privateMessages, []),
+      ]);
+
+      groups = Array.isArray(storedGroups) ? storedGroups : [];
+      groupMessages = Array.isArray(storedGroupMessages) ? storedGroupMessages : [];
+      groupInvites = Array.isArray(storedGroupInvites) ? storedGroupInvites : [];
+      notifications = Array.isArray(storedNotifications) ? storedNotifications : [];
+      privateMessages = Array.isArray(storedPrivateMessages) ? storedPrivateMessages : [];
+
+      console.log(
+        "Community data loaded from Netlify Blobs:",
+        groups.length,
+        "groups,",
+        groupMessages.length,
+        "group messages,",
+        groupInvites.length,
+        "invites,",
+        notifications.length,
+        "notifications,",
+        privateMessages.length,
+        "private messages.",
+      );
     } catch (error) {
-      console.error(`❌ Community data read failed: ${file}`, error);
-      return [];
+      console.error("Failed to load community data from Netlify Blobs:", error);
+      groups = [];
+      groupMessages = [];
+      groupInvites = [];
+      notifications = [];
+      privateMessages = [];
     }
   };
 
-  const writeArray = (file, value) => {
-    fs.writeFileSync(file, JSON.stringify(value, null, 2), "utf-8");
-  };
-
-  let groups = readArray(GROUPS_FILE);
-  let groupMessages = readArray(GROUP_MESSAGES_FILE);
-  let groupInvites = readArray(GROUP_INVITES_FILE);
-  let notifications = readArray(NOTIFICATIONS_FILE);
-  let privateMessages = readArray(PRIVATE_MESSAGES_FILE);
-
   const saveAll = () => {
-    writeArray(GROUPS_FILE, groups);
-    writeArray(GROUP_MESSAGES_FILE, groupMessages);
-    writeArray(GROUP_INVITES_FILE, groupInvites);
-    writeArray(NOTIFICATIONS_FILE, notifications);
-    writeArray(PRIVATE_MESSAGES_FILE, privateMessages);
+    Promise.all([
+      writeBlobJSON(COMMUNITY_KEYS.groups, groups),
+      writeBlobJSON(COMMUNITY_KEYS.groupMessages, groupMessages),
+      writeBlobJSON(COMMUNITY_KEYS.groupInvites, groupInvites),
+      writeBlobJSON(COMMUNITY_KEYS.notifications, notifications),
+      writeBlobJSON(COMMUNITY_KEYS.privateMessages, privateMessages),
+    ]).catch((error) => {
+      console.error("Failed to persist community data:", error);
+    });
   };
 
   const publicUser = (user) => user ? ({
@@ -121,7 +152,7 @@ export function registerCommunityRoutes({
       createdAt: new Date().toISOString(),
     };
     notifications.unshift(item);
-    writeArray(NOTIFICATIONS_FILE, notifications);
+    saveAll();
     return item;
   };
 
@@ -165,7 +196,7 @@ export function registerCommunityRoutes({
       updatedAt:new Date().toISOString(),
     };
     groups.unshift(group);
-    writeArray(GROUPS_FILE, groups);
+    saveAll();
     res.status(201).json({ success:true, group:safeGroup(group, req.user) });
   });
 
@@ -191,7 +222,7 @@ export function registerCommunityRoutes({
       invited.push(invite);
       createNotification(userId, { type:"GROUP_INVITE", title:"Group invitation", message:`${req.user.name || "An admin"} invited you to join ${group.name}.`, data:{ inviteId:invite.id, groupId:group.id, groupName:group.name, role } });
     }
-    writeArray(GROUP_INVITES_FILE, groupInvites);
+    saveAll();
     res.json({ success:true, invitedCount:invited.length, invites:invited });
   });
 
@@ -219,7 +250,7 @@ export function registerCommunityRoutes({
     if (!invite) return res.status(404).json({ success:false, message:"Invitation not found." });
     invite.status = "declined";
     invite.respondedAt = new Date().toISOString();
-    writeArray(GROUP_INVITES_FILE, groupInvites);
+    saveAll();
     res.json({ success:true, message:"Invitation declined." });
   });
 
@@ -235,7 +266,7 @@ export function registerCommunityRoutes({
     group.resources[type] ||= [];
     group.resources[type].unshift(resource);
     group.updatedAt = new Date().toISOString();
-    writeArray(GROUPS_FILE, groups);
+    saveAll();
     res.status(201).json({ success:true, resource, group:safeGroup(group, req.user) });
   });
 
@@ -258,7 +289,7 @@ export function registerCommunityRoutes({
     if (audience === "selected" && !recipientIds.length) return res.status(400).json({ success:false, message:"Select at least one recipient." });
     const message = { id:crypto.randomUUID(), groupId:group.id, senderId:req.user.id, body, audience, recipientIds, createdAt:new Date().toISOString() };
     groupMessages.push(message);
-    writeArray(GROUP_MESSAGES_FILE, groupMessages);
+    saveAll();
     const recipients = audience === "selected" ? recipientIds : group.members.map((m) => String(m.userId));
     for (const userId of recipients) if (userId !== String(req.user.id)) createNotification(userId, { type:"GROUP_MESSAGE", title:group.name, message:body, data:{ groupId:group.id, messageId:message.id } });
     res.status(201).json({ success:true, message:{ ...message, sender:publicUser(req.user) } });
@@ -273,13 +304,13 @@ export function registerCommunityRoutes({
     const item = notifications.find((n) => n.id === String(req.params.notificationId) && n.userId === String(req.user.id));
     if (!item) return res.status(404).json({ success:false, message:"Notification not found." });
     item.read = true;
-    writeArray(NOTIFICATIONS_FILE, notifications);
+    saveAll();
     res.json({ success:true, notification:item });
   });
 
   app.post("/api/notifications/read-all", anyAuth, (req, res) => {
     for (const item of notifications) if (item.userId === String(req.user.id)) item.read = true;
-    writeArray(NOTIFICATIONS_FILE, notifications);
+    saveAll();
     res.json({ success:true });
   });
 
@@ -293,7 +324,7 @@ export function registerCommunityRoutes({
     if (!other) return res.status(404).json({ success:false, message:"User not found." });
     const conversation = privateMessages.filter((m) => (String(m.fromUserId) === String(req.user.id) && String(m.toUserId) === String(other.id)) || (String(m.fromUserId) === String(other.id) && String(m.toUserId) === String(req.user.id))).map((m) => ({ ...m, from:publicUser(findUser(m.fromUserId)), to:publicUser(findUser(m.toUserId)) }));
     for (const m of privateMessages) if (m.fromUserId === String(other.id) && m.toUserId === String(req.user.id)) m.read = true;
-    writeArray(PRIVATE_MESSAGES_FILE, privateMessages);
+    saveAll();
     res.json({ success:true, user:publicUser(other), messages:conversation });
   });
 
@@ -304,7 +335,7 @@ export function registerCommunityRoutes({
     if (!body) return res.status(400).json({ success:false, message:"Message is required." });
     const message = { id:crypto.randomUUID(), fromUserId:String(req.user.id), toUserId:String(other.id), body, read:false, createdAt:new Date().toISOString() };
     privateMessages.push(message);
-    writeArray(PRIVATE_MESSAGES_FILE, privateMessages);
+    saveAll();
     createNotification(other.id, { type:"PRIVATE_MESSAGE", title:`Message from ${req.user.name || "User"}`, message:body, data:{ userId:String(req.user.id), messageId:message.id } });
     res.status(201).json({ success:true, message:{ ...message, from:publicUser(req.user), to:publicUser(other) } });
   });
@@ -312,5 +343,7 @@ export function registerCommunityRoutes({
   return {
     createNotification,
     createNotificationForAllStudents,
+    loadCommunityData,
   };
 }
+
